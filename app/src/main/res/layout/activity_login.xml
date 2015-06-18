@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mx.onecard.onecardapp.LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/LayoutBtnsLoginHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="100dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="100dp"
+        >
+
+        <Button
+            android:id="@+id/BtnLoginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+             />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="20dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/BtnLoginGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
