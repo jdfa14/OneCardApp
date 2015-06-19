@@ -1,40 +1,83 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="mx.onecard.onecardapp.LoginActivity">
 
     <LinearLayout
-        android:id="@+id/LayoutBtnsLoginHolder"
-        android:layout_width="match_parent"
+        android:id="@+id/llProfileFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ivUserImage"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llSigninFrame"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="100dp"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:paddingTop="100dp"
-        >
+        android:paddingTop="100dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Hola que hace?"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight=".25"/>
 
         <Button
             android:id="@+id/BtnLoginNormal"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-             />
+            android:layout_height="0dp"
+            android:layout_weight=".25" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:textSize="20dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_height="0dp"
+            android:layout_weight=".25"
+            android:textSize="20sp" />
 
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/BtnLoginGoogle"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="0dp"
+            android:layout_weight=".25" />
 
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

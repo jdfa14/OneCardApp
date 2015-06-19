@@ -600,7 +600,7 @@ public class LoginButton extends FacebookButtonBase {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Paint.FontMetrics fontMetrics = getPaint().getFontMetrics();
         int height = (getCompoundPaddingTop() +
-                (int)Math.ceil(Math.abs(fontMetrics.top) + Math.abs(fontMetrics.bottom)) +
+                heightMeasureSpec +
                 getCompoundPaddingBottom());
 
         final Resources resources = getResources();
