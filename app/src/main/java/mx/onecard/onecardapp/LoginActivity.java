@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -39,6 +40,7 @@ public class LoginActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
 
         mSignInButton = (SignInButton) findViewById(R.id.BtnLoginGoogle);
@@ -188,7 +190,27 @@ public class LoginActivity extends ActionBarActivity
         }
     }
 
-    private signIn(View v){
+    private void signIn(View v){
+        googlePlusLogin();
+    }
 
+    private void logout(View v){
+        googlePlusLogout();
+    }
+
+    private void googlePlusLogin(){
+        if(!mGoogleApiClient.isConnecting()){
+            signedInUser = true;
+        }
+    }
+
+    private void googlePlusLogout(){
+        if(mGoogleApiClient.isConnected()){
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+            updateFrames(false);
+            signedInUser = false;
+        }
     }
 }
