@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 22
@@ -11,6 +21,7 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -18,10 +29,17 @@ android {
         }
     }
 }
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile project(':facebook')
+    compile('com.twitter.sdk.android:twitter:1.6.0@aar') {
+        transitive = true;
+    }
 }

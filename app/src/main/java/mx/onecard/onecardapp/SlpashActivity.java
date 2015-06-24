@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ProgressBar;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import io.fabric.sdk.android.Fabric;
 
 
 public class SlpashActivity extends Activity {
+
     private boolean dataLoaded = false;
     private boolean dataLoading = false;
 
@@ -15,7 +19,6 @@ public class SlpashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slpash);
-
         checkData();
     }
 
@@ -28,7 +31,7 @@ public class SlpashActivity extends Activity {
     private void checkData(){
         if(!dataLoaded) {
             if (!dataLoading){
-                new LoadDataTask().execute();
+                new LoadDataTask(this).execute();
                 dataLoading = true;
             }
         }
@@ -39,6 +42,11 @@ public class SlpashActivity extends Activity {
 
     private class LoadDataTask extends AsyncTask <Void,Integer,Void>
     {
+        public SlpashActivity mSplashActivity;
+
+        public LoadDataTask(SlpashActivity mSplashActivity){
+            this.mSplashActivity = mSplashActivity;
+        }
         /*
         @Override
         protected void onPreExecute() {
@@ -58,10 +66,19 @@ public class SlpashActivity extends Activity {
 
         @Override
         protected Void doInBackground(Void... params) {
+
             try
             {
                 synchronized (this)                     // Obtrenemos el token del thread actual
                 {
+
+
+                    //Inicializando Twitter sdk
+                    TwitterAuthConfig authConfig = new TwitterAuthConfig(
+                            getResources().getString(R.string.twitter_consumer_key),
+                            getResources().getString(R.string.twitter_consumer_secret));
+                    Fabric.with(mSplashActivity, new Twitter(authConfig));
+
                     //Aqui es un codigo temporal, que solo simula cargar datos
                     int counter = 0;
                     while(counter <= 4)
@@ -96,7 +113,7 @@ public class SlpashActivity extends Activity {
     }
 
     private void nextActivity(){
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this,SocialLogin.class);
         startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }

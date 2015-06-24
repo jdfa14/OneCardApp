@@ -1,9 +1,12 @@
 package mx.onecard.onecardapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,13 +15,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 
 public class LoginActivity extends ActionBarActivity
@@ -37,10 +49,14 @@ public class LoginActivity extends ActionBarActivity
     private TextView mUsernameTextView, mEmailTextView;
     private LinearLayout mProfileFrame, mSignInFrame;
 
+    //facebook elements
+    private LoginButton mfacebookButton;
+    private CallbackManager mCallbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //FacebookSdk.sdkInitialize(this.getApplicationContext());
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
 
         mSignInButton = (SignInButton) findViewById(R.id.BtnLoginGoogle);
@@ -58,6 +74,28 @@ public class LoginActivity extends ActionBarActivity
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+
+        //Facebook stuff
+        mfacebookButton = (LoginButton) findViewById(R.id.BtnLoginFacebook);
+        mfacebookButton.setReadPermissions(Arrays.asList("email", " basic_info"));
+        mCallbackManager = CallbackManager.Factory.create();
+
+        mfacebookButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
     }
 
     @Override
@@ -79,6 +117,18 @@ public class LoginActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AppEventsLogger.deactivateApp(this);
     }
 
     @Override

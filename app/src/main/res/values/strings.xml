@@ -5,4 +5,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
+
+    <!-- Social Network -->
+    <string name="facebook_app_id">827935720625906</string>
+    <string name="twitter_consumer_key">6g1huJecEp9QwVtk4mBnItLug</string>
+    <string name="twitter_consumer_secret">CT3di3FOQWussd9nR89SMnZklZ3zdYz9UcJfWP42yPmnLFqidu</string>
+    <string name="title_activity_social_login">SocialLogin</string>
+
 </resources>

@@ -71,11 +71,11 @@
             android:text="Email"
             android:textSize="20sp"/>
 
-        <Button
-            android:id="@+id/login_button"
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/BtnLoginFacebook"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:layout_height="50dp"
+            />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/BtnLoginGoogle"
