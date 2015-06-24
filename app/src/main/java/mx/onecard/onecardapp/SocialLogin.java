@@ -2,18 +2,27 @@ package mx.onecard.onecardapp;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.models.User;
+import com.twitter.sdk.android.core.services.AccountService;
 
 
 public class SocialLogin extends ActionBarActivity {
     private TwitterLoginButton loginButton;
+
+    private static final String TAG = "SocialLogin";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +31,39 @@ public class SocialLogin extends ActionBarActivity {
         loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
-            public void success(Result<TwitterSession> result) {
+            public void success(Result<TwitterSession> result) { // TwitterSession
                 // Do something with result, which provides a TwitterSession for making API calls
+                AccountService mTwitterAcc = Twitter.getApiClient(result.data).getAccountService();
+                mTwitterAcc.verifyCredentials(true, true, new Callback<User>() {
+                    @Override
+                    public void success(Result<User> result) {
+                        String imageUrl = result.data.profileImageUrl;
+                        String email = result.data.email;
+                        String userName = result.data.name;
+                        Log.v(TAG, "imgURL: " + imageUrl);
+                        Log.v(TAG,"email: " + email);
+                        Log.v(TAG,"userName: " + userName);
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+
+                    }
+                });
+
+                // Preguntar por EMAIL permisos
+                TwitterAuthClient mAuthClient = new TwitterAuthClient();
+                mAuthClient.requestEmail(result.data, new Callback<String>() {
+                    @Override
+                    public void success(Result<String> result) {
+                        Log.v(TAG,"email: " + result.data);
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        Log.e(TAG, "Email Request: " + e.toString());
+                    }
+                });
             }
 
             @Override
