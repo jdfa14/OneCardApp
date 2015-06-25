@@ -38,8 +38,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
-    compile project(':facebook')
     compile('com.twitter.sdk.android:twitter:1.6.0@aar') {
         transitive = true;
     }
+    compile 'com.facebook.android:facebook-android-sdk:4.2.0'
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ProgressBar;
+
+import com.facebook.FacebookSdk;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.Fabric;
@@ -71,22 +73,17 @@ public class SlpashActivity extends Activity {
             {
                 synchronized (this)                     // Obtrenemos el token del thread actual
                 {
-
-
                     //Inicializando Twitter sdk
                     TwitterAuthConfig authConfig = new TwitterAuthConfig(
                             getResources().getString(R.string.twitter_consumer_key),
                             getResources().getString(R.string.twitter_consumer_secret));
                     Fabric.with(mSplashActivity, new Twitter(authConfig));
 
+                    //Inicializando Facebook SDK
+                    FacebookSdk.sdkInitialize(getApplicationContext());
+
                     //Aqui es un codigo temporal, que solo simula cargar datos
-                    int counter = 0;
-                    while(counter <= 4)
-                    {
-                        this.wait(850);
-                        counter++;
-                        publishProgress(counter*25);
-                    }
+                    this.wait(1500);
                 }
             }
             catch (InterruptedException e)

@@ -7,6 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -17,9 +24,17 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.services.AccountService;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SocialLogin extends ActionBarActivity {
-    private TwitterLoginButton loginButton;
+    private TwitterLoginButton mTwitterLoginBtn;
+    //Facebook stuff
+    private LoginButton mFacebookLoginBtn;
+    private CallbackManager mCallbackManager;
 
     private static final String TAG = "SocialLogin";
 
@@ -28,8 +43,17 @@ public class SocialLogin extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_login);
-        loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
-        loginButton.setCallback(new Callback<TwitterSession>() {
+        List<String> permissions = new ArrayList<String>();
+        permissions.add("public_profile");
+        permissions.add("email");
+        //Facebook callbackmanager
+        mCallbackManager = CallbackManager.Factory.create();
+
+        mTwitterLoginBtn = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+        mFacebookLoginBtn = (LoginButton) findViewById(R.id.facebook_login_button);
+        mFacebookLoginBtn.setReadPermissions(permissions);
+
+        mTwitterLoginBtn.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) { // TwitterSession
                 // Do something with result, which provides a TwitterSession for making API calls
@@ -41,8 +65,8 @@ public class SocialLogin extends ActionBarActivity {
                         String email = result.data.email;
                         String userName = result.data.name;
                         Log.v(TAG, "imgURL: " + imageUrl);
-                        Log.v(TAG,"email: " + email);
-                        Log.v(TAG,"userName: " + userName);
+                        Log.v(TAG, "email: " + email);
+                        Log.v(TAG, "userName: " + userName);
                     }
 
                     @Override
@@ -56,12 +80,12 @@ public class SocialLogin extends ActionBarActivity {
                 mAuthClient.requestEmail(result.data, new Callback<String>() {
                     @Override
                     public void success(Result<String> result) {
-                        Log.v(TAG,"email: " + result.data);
+                        Log.v(TAG, "email: " + result.data);
                     }
 
                     @Override
                     public void failure(TwitterException e) {
-                        Log.e(TAG, "Email Request: " + e.toString());
+                        Log.v(TAG, "Email Request: " + e.toString());
                     }
                 });
             }
@@ -69,8 +93,36 @@ public class SocialLogin extends ActionBarActivity {
             @Override
             public void failure(TwitterException exception) {
                 // Do something on failure
+                Log.v(TAG, "Login Error:" + exception.toString());
             }
         });
+        mFacebookLoginBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                Log.v(TAG,jsonObject.toString());
+                            }
+                        }
+                );
+
+            }
+
+            @Override
+            public void onCancel() {
+                Log.v(TAG,"Canceled");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Log.v(TAG,"Error");
+            }
+        });
+
+
     }
 
     @Override
@@ -98,6 +150,7 @@ public class SocialLogin extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        loginButton.onActivityResult(requestCode, resultCode, data);
+        mTwitterLoginBtn.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode,resultCode,data);
     }
 }
