@@ -108,7 +108,11 @@ public class SocialLogin extends ActionBarActivity {
                             }
                         }
                 );
-
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,verified");
+                request.setParameters(parameters);
+                request.executeAsync();
+                Log.v(TAG, "Facebook Login succeded!");
             }
 
             @Override
