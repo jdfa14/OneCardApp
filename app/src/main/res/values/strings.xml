@@ -11,5 +11,12 @@
     <string name="twitter_consumer_key">6g1huJecEp9QwVtk4mBnItLug</string>
     <string name="twitter_consumer_secret">CT3di3FOQWussd9nR89SMnZklZ3zdYz9UcJfWP42yPmnLFqidu</string>
     <string name="title_activity_social_login">SocialLogin</string>
+    <string name="google_app_id">693416510141-70qgl15e83omcel4ojvb0p9skk7nobea.apps.googleusercontent.com</string>
+        <!-- Google + -->
+    <string name="btn_login_from_google">Login with Google!!</string>
+    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_revoke_access">Recoke Access</string>
+    <string name="logo_content">Logo</string>
+
 
 </resources>
