@@ -18,5 +18,29 @@
     <string name="btn_revoke_access">Recoke Access</string>
     <string name="logo_content">Logo</string>
 
+        <!-- Social btns text -->
+    <string name="com_facebook_loginview_log_out_button">Conectar </string>
+    <string name="com_facebook_loginview_log_in_button">Desconectar </string>
+    <string name="com_facebook_loginview_log_in_button_long">Conectar con Facebook </string>
+
+    <string name="common_signin_button_text">Conectar</string>
+    <string name="common_signin_button_text_long">Conectar con Google+</string>
+    <string name="tw__login_btn_txt">Conectar con Twitter </string>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string-array name="menu">
+        <item>Inicio</item>
+        <item>Consultar Movimientos</item>
+        <item>Configuracion</item>
+    </string-array>
 
 </resources>

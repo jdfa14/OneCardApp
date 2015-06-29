@@ -18,29 +18,49 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@android:color/white"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="15dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:contentDescription="@string/logo_content"
-                android:padding="20dp"
                 android:src="@drawable/logo_one_card" />
 
-            <com.facebook.login.widget.LoginButton
+            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/facebook_login_button"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="100dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:textSize="@dimen/facebook_login_button_text_size"
+                android:textStyle="bold"/>
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/google_login_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/google_login_button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/common_signin_btn_text_dark"
+                android:text="@string/common_signin_button_text_long"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:textSize="@dimen/google_login_button_text_size"
+                android:textStyle="bold"/>
 
             <com.twitter.sdk.android.core.identity.TwitterLoginButton
                 android:id="@+id/twitter_login_button"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
 
         </LinearLayout>
     </FrameLayout>

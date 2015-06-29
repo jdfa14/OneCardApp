@@ -2,6 +2,7 @@ package mx.onecard.onecardapp;
 
 import android.app.ProgressDialog;
 import android.content.IntentSender;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -35,6 +38,7 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.services.AccountService;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,7 +53,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
-    private SignInButton mGoogleLoginBtn;
+    private Button mGoogleLoginBtn;
     //Twitter stuff
     private TwitterLoginButton mTwitterLoginBtn;
     //Facebook stuff
@@ -63,7 +67,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_login);
-        final Animation animation = AnimationUtils.loadAnimation(this,R.anim.fade_in_translate_top);
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_translate_top);
         final View layout = findViewById(R.id.login_linear);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -149,7 +153,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
                 mAuthClient.requestEmail(result.data, new Callback<String>() {
                     @Override
                     public void success(Result<String> result) {
-                        Log.v(TAG, "email: " + result.data);
+                        Log.v(TAG, "Tw: " + result.data);
                     }
 
                     @Override
@@ -167,7 +171,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         });
 
         // Google Stuff
-        mGoogleLoginBtn = (SignInButton) findViewById(R.id.google_login_button);
+        mGoogleLoginBtn = (Button) findViewById(R.id.google_login_button2);
         mGoogleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +224,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Facebook
-        mCallbackManager.onActivityResult(requestCode,resultCode,data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         //Twitter
         mTwitterLoginBtn.onActivityResult(requestCode, resultCode, data);
         //Google
@@ -266,7 +270,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-        Log.v(TAG,"Google: onConnected");
+        Log.v(TAG, "Google: onConnected");
         // Get user's information
         //getProfileInformation();
     }
@@ -316,5 +320,4 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
             }
         }
     }
-
 }
