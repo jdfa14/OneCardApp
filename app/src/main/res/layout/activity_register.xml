@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="mx.onecard.onecardapp.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/reg_email_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_top_bg"
+            android:drawableLeft="@drawable/email_icon"
+            android:drawableStart="@drawable/email_icon"
+            android:hint="@string/reg_email_hint"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColorHint="#bbbbbb" />
+
+        <EditText
+            android:id="@+id/reg_psw_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_mid_bg"
+            android:drawableLeft="@drawable/password_icon"
+            android:drawableStart="@drawable/password_icon"
+            android:hint="@string/reg_password_hint"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="#bbbbbb" />
+
+        <EditText
+            android:id="@+id/reg_psw_confirm_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_mid_bg"
+            android:drawableLeft="@drawable/password_icon"
+            android:drawableStart="@drawable/password_icon"
+            android:hint="@string/reg_password_confirm_hint"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="#bbbbbb" />
+
+        <EditText
+            android:id="@+id/reg_card_no_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_bottom_bg"
+            android:drawableLeft="@drawable/card_icon"
+            android:drawableStart="@drawable/card_icon"
+            android:hint="@string/reg_card_hint"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColorHint="#bbbbbb" />
+
+        <Button
+            android:id="@+id/reg_create_account_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reg_create_account_button"
+            android:background="@drawable/button_default_bg"/>
+    </LinearLayout>
+
+</RelativeLayout>

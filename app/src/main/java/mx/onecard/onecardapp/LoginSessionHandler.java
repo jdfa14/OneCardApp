@@ -1,0 +1,237 @@
+package mx.onecard.onecardapp;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.User;
+import com.twitter.sdk.android.core.services.AccountService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Created by OneCardAdmon on 30/06/2015.
+ * Manejará el inicio de sesion y obtendrá los parametros necesarios
+ * para validar losd atos
+ */
+public class LoginSessionHandler {
+    private static LoginSessionHandler instance = new LoginSessionHandler();    // Instancia para SINGLETON
+    private AccessToken fbAccesToken;                                    // Access token de facebook
+    private TwitterSession twitterSession;                               // Sesion de twitter
+    private GoogleApiClient googleApiClient;                             // Api de Google para iniciar sesion
+    private STATE signed = STATE.LOG_OFF;                                // Estado en que se encuentra el usuario
+    private DATASTATE loginIn = DATASTATE.DATA_LOADED;                   // Esperando respuesta del servidor
+    private DATASTATE socialInfo = DATASTATE.DATA_LOADED;                // Esperando respuesta del proceso asincrono para obtener email
+    private Bundle data;
+    private RESPONSE lastLoginResponse;
+
+    public enum SOCIAL {
+        NONE,               // email and psw
+        FACEBOOK,           // facebook login
+        GOOGLE,             // google login
+        TWITTER             //
+    }
+
+    public Bundle getData() {
+        return data;
+    }
+
+    public enum RESPONSE {
+        NO_RESPONSE,
+        FAIL_ERROR,
+        FAIL_WRONG_CREDENTIALS,
+        FAIL_CANT_CONNECT,
+        SUCCESS_NEW_USER,
+        SUCCESS_REGISTERED_USER
+    }
+
+    private enum STATE {             // Manejara los posibles estados de la sesion
+        LOG_OFF,                    // Estado inicial cuando no se esta haciendo nada
+        LOG_FAIL,                   // Estado intermedio que pasara a ser LOG OFF una vez leido
+        LOGIN_IN,                   // Estado intermedio cunado se activo un proceso asincrono para iniciar sesion
+        LOGGED_IN                   // Estado cuando fue confirmado que se inicio la sesion en el proceso asincrono
+    }
+
+    private enum DATASTATE {
+        DATA_LOADED,
+        DATA_LOADING
+    }
+
+    private String email;
+    private String password;
+
+    public static int LOGIN_FAIL = 100;
+    public static int LOGIN_NEW_USER = 101;
+    public static int LOGIN_REGISTERED_USER = 102;
+
+    public static LoginSessionHandler getInstance() {
+        return instance;
+    }
+
+    protected LoginSessionHandler() {
+        // Constructor vacio necesario para instanciar el objeto
+    }
+
+    public boolean login(String email, String password) {
+        if (true) {// validate with web service
+            data.putString("email", email);
+            data.putString("password", password);
+            //TODO aqui se inicia sesion y se guarda en el dispositivo
+        }
+        return true;
+    }
+
+    public void login(AccessToken fbAccesToken) {
+        fbAccesToken = fbAccesToken;
+        login(SOCIAL.FACEBOOK);
+    }
+
+    public void login(TwitterSession twitterSession) {
+        twitterSession = twitterSession;
+        login(SOCIAL.TWITTER);
+    }
+
+    public void login(GoogleApiClient googleApiClient) {
+        googleApiClient = googleApiClient;
+        login(SOCIAL.GOOGLE);
+    }
+
+    private void login(SOCIAL kind) {
+        lastLoginResponse = RESPONSE.NO_RESPONSE;   // Inicializamos ene stado neutro donde no hay respuesta
+        data = new Bundle();                        // Nuevo set de parametros
+        JSONObject result;// The json result from web services
+
+        // Simulando comunicacion
+        result = new JSONObject();
+        try {
+            result.put("action", "sign_up"); // or action : sign_in
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //End
+
+        try {
+            if (result.getString("action").equals("sign_up")) {
+                socialInfo = DATASTATE.DATA_LOADING;
+                switch (kind) {
+                    case FACEBOOK: {
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                fbAccesToken,
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                        try {
+                                            registerUser(jsonObject.getString("email"));
+                                        } catch (JSONException e) {
+                                            setError(e.getMessage());
+                                        }
+                                    }
+                                }
+                        );
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,verified");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                        break;
+                    }
+                    case TWITTER: {
+                        AccountService mTwitterAcc = Twitter.getApiClient(twitterSession).getAccountService();
+                        mTwitterAcc.verifyCredentials(true, true, new Callback<User>() {
+                            @Override
+                            public void success(Result<User> result) {
+                                String imageUrl = result.data.profileImageUrl;
+                                String userName = result.data.name;
+                                //TODO aqui se puede obtener algonos otros datos
+                            }
+
+                            @Override
+                            public void failure(TwitterException e) {
+                                setError(e.getMessage());
+                            }
+                        });
+
+                        // Preguntar por EMAIL permisos
+                        TwitterAuthClient mAuthClient = new TwitterAuthClient();
+                        mAuthClient.requestEmail(twitterSession, new Callback<String>() {
+                            @Override
+                            public void success(Result<String> result) {
+                                registerUser(result.data);
+                            }
+
+                            @Override
+                            public void failure(TwitterException e) {
+                                setError(e.getMessage());
+                            }
+                        });
+                        break;
+                    }
+                    case GOOGLE: {
+                        try {
+                            if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
+                                /**Person currentPerson = Plus.PeopleApi.getCurrentPerson(googleApiClient);
+                                 * String personName = currentPerson.getDisplayName();
+                                 * String personPhotoUrl = currentPerson.getImage().getUrl();
+                                 * String personGooglePlusProfile = currentPerson.getUrl();
+                                 * String email = Plus.AccountApi.getAccountName(googleApiClient);
+                                 */
+                                registerUser(Plus.AccountApi.getAccountName(googleApiClient));
+                            } else {
+                                setError("Google Api no pudo encontrar una cuenta activa");
+                            }
+                        } catch (Exception e) {
+                            setError(e.getMessage());
+                        }
+                        break;
+                    }
+                }
+            } else if (result.getString("action").equals("sign_in")) {
+                //TODO aqui para autentificar y obtener recursos
+                loadData();
+            } else {
+                lastLoginResponse = RESPONSE.FAIL_WRONG_CREDENTIALS;
+            }
+        } catch (JSONException e) {
+            setError(e.getMessage());
+        }
+    }
+
+    public RESPONSE getLastResponse() {
+        return lastLoginResponse;
+    }
+
+    // TODO completar estas funciones que debe cargar los numeros de tarjeta, nombre del cliente y cosas similares de servicios externos
+    private void loadData() {
+
+    }
+
+    private void prompRegisterActivity(String email) {// Cosa que solo llamara a la activity de nuevo usuario
+
+    }
+
+    private void registerUser(String email) {                // Registrar un usuario nuevo en la tabla
+        lastLoginResponse = RESPONSE.SUCCESS_NEW_USER;      // Tipo de respuesta
+        socialInfo = DATASTATE.DATA_LOADED;                 // La informacion ya se ha cargado
+        data.putString("email", email);                      // Se pone el email
+    }
+
+    private void setError(String error) {
+        lastLoginResponse = RESPONSE.FAIL_ERROR;
+        socialInfo = DATASTATE.DATA_LOADED;
+        data.putString("error", error);
+    }
+
+}

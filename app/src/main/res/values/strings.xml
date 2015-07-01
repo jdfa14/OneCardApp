@@ -42,5 +42,15 @@
         <item>Consultar Movimientos</item>
         <item>Configuracion</item>
     </string-array>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="reg_email">Correo Electronico</string>
+    <string name="reg_password">Contraseña</string>
+    <string name="ref_password_confirm">Confirmar contraseña</string>
+    <string name="reg_card_number">Numero de tarjeta</string>
+    <string name="reg_create_account_button">Crear cuenta</string>
+    <string name="reg_email_hint">Correo electronico</string>
+    <string name="reg_password_hint">Contraseña</string>
+    <string name="reg_password_confirm_hint">Confirma contraseña</string>
+    <string name="reg_card_hint">1234-1234-1234-1234</string>
 
 </resources>

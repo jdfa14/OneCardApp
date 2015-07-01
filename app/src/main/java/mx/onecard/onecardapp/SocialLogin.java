@@ -59,7 +59,8 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     //Facebook stuff
     private LoginButton mFacebookLoginBtn;
     private CallbackManager mCallbackManager;
-
+    // Handler for login
+    private LoginSessionHandler mLoginSessionHandler;
 
     private static final String TAG = "SocialLogin";
 
@@ -87,6 +88,9 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         });
         layout.startAnimation(animation);
 
+        // Instancia de SessionHandler
+        mLoginSessionHandler = LoginSessionHandler.getInstance();
+
         List<String> permissions = new ArrayList<String>();
         permissions.add("public_profile");
         permissions.add("email");
@@ -96,31 +100,21 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         mFacebookLoginBtn.setReadPermissions(permissions);
         mFacebookLoginBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                                Log.v(TAG, jsonObject.toString());
-                            }
-                        }
-                );
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,verified");
-                request.setParameters(parameters);
-                request.executeAsync();
-                Log.v(TAG, "Facebook Login succeded!");
+            public void onSuccess(final LoginResult loginResult) {
+                Log.v(TAG, "Facebook: Login Succeeded");
+                mLoginSessionHandler.login(loginResult.getAccessToken());
+                responseHandler();
             }
 
             @Override
             public void onCancel() {
-                Log.v(TAG, "Canceled");
+                Log.v(TAG, "Facebook: Cancel button pressed");
             }
 
             @Override
             public void onError(FacebookException e) {
-                Log.v(TAG, "Error");
+                Log.v(TAG, "Facebook: Error " + e.toString());
+                e.printStackTrace();
             }
         });
 
@@ -129,44 +123,16 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         mTwitterLoginBtn.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) { // TwitterSession
-                // Do something with result, which provides a TwitterSession for making API calls
-                AccountService mTwitterAcc = Twitter.getApiClient(result.data).getAccountService();
-                mTwitterAcc.verifyCredentials(true, true, new Callback<User>() {
-                    @Override
-                    public void success(Result<User> result) {
-                        String imageUrl = result.data.profileImageUrl;
-                        String email = result.data.email;
-                        String userName = result.data.name;
-                        Log.v(TAG, "imgURL: " + imageUrl);
-                        Log.v(TAG, "email: " + email);
-                        Log.v(TAG, "userName: " + userName);
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-
-                    }
-                });
-
-                // Preguntar por EMAIL permisos
-                TwitterAuthClient mAuthClient = new TwitterAuthClient();
-                mAuthClient.requestEmail(result.data, new Callback<String>() {
-                    @Override
-                    public void success(Result<String> result) {
-                        Log.v(TAG, "Tw: " + result.data);
-                    }
-
-                    @Override
-                    public void failure(TwitterException e) {
-                        Log.v(TAG, "Email Request: " + e.toString());
-                    }
-                });
+                //Obtenemos una session abeirta de twitter en el dispositivo
+                Log.v(TAG, "Twitter: Login Succeeded");
+                mLoginSessionHandler.login(result.data);
+                responseHandler();
             }
 
             @Override
             public void failure(TwitterException exception) {
-                // Do something on failure
                 Log.v(TAG, "Login Error:" + exception.toString());
+                exception.printStackTrace(); // No twitter sesion detected or logged
             }
         });
 
@@ -187,6 +153,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     @Override
     protected void onStart() {
         super.onStart();
+
         mGoogleApiClient.connect();
     }
 
@@ -241,6 +208,38 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         }
     }
 
+    //ACTIVITY FUNCTIONS
+    //TODO debe ser una intetrface activada desde el mLoginSessionHandler
+    private void responseHandler() {
+        LoginSessionHandler.RESPONSE response = mLoginSessionHandler.getLastResponse();
+        switch (response) {
+            case NO_RESPONSE: {
+
+                break;
+            }
+            case FAIL_ERROR: {
+                break;
+            }
+            case FAIL_CANT_CONNECT: {
+                break;
+            }
+            case FAIL_WRONG_CREDENTIALS: {
+                break;
+            }
+            case SUCCESS_NEW_USER: {
+                Intent intent = new Intent(this, RegisterActivity.class);
+                intent.putExtras(mLoginSessionHandler.getData());
+                startActivity(intent);
+                finish();
+                break;
+            }
+            case SUCCESS_REGISTERED_USER: {
+                break;
+            }
+        }
+    }
+
+
     // GOOGLE FUNCTIONS
 
     private void getProfileInformation() {
@@ -270,9 +269,9 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+
         Log.v(TAG, "Google: onConnected");
-        // Get user's information
-        //getProfileInformation();
+
     }
 
     @Override
@@ -306,6 +305,17 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
             resolveSignInError();
+            mLoginSessionHandler.login(mGoogleApiClient);
+            responseHandler();
+        }
+    }
+
+    private void signOutWithGPlus() {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+            mSignInClicked = false;
         }
     }
 
