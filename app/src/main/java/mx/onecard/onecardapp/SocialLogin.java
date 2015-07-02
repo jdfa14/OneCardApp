@@ -39,13 +39,17 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.services.AccountService;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SocialLogin extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class SocialLogin extends ActionBarActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LoginSessionHandler.ResponseListener{
 
     //Google Stuff
     private static final int RC_SIGN_IN = 0;
@@ -89,7 +93,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         layout.startAnimation(animation);
 
         // Instancia de SessionHandler
-        mLoginSessionHandler = LoginSessionHandler.getInstance();
+        mLoginSessionHandler = LoginSessionHandler.getInstance(this);
 
         List<String> permissions = new ArrayList<String>();
         permissions.add("public_profile");
@@ -103,7 +107,6 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
             public void onSuccess(final LoginResult loginResult) {
                 Log.v(TAG, "Facebook: Login Succeeded");
                 mLoginSessionHandler.login(loginResult.getAccessToken());
-                responseHandler();
             }
 
             @Override
@@ -126,7 +129,6 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
                 //Obtenemos una session abeirta de twitter en el dispositivo
                 Log.v(TAG, "Twitter: Login Succeeded");
                 mLoginSessionHandler.login(result.data);
-                responseHandler();
             }
 
             @Override
@@ -141,7 +143,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         mGoogleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signInWithGplus();
+                    signInWithGplus();
             }
         });
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -153,7 +155,6 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
     @Override
     protected void onStart() {
         super.onStart();
-
         mGoogleApiClient.connect();
     }
 
@@ -210,8 +211,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
 
     //ACTIVITY FUNCTIONS
     //TODO debe ser una intetrface activada desde el mLoginSessionHandler
-    private void responseHandler() {
-        LoginSessionHandler.RESPONSE response = mLoginSessionHandler.getLastResponse();
+    public void responseListener(LoginSessionHandler.RESPONSE response) {
         switch (response) {
             case NO_RESPONSE: {
 
@@ -267,11 +267,12 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnected(Bundle bundle) {
-        mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-
-        Log.v(TAG, "Google: onConnected");
-
+        if(mSignInClicked == true) {
+            mSignInClicked = false;
+            mLoginSessionHandler.login(mGoogleApiClient);
+            Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+            Log.v(TAG, "Google: onConnected");
+        }
     }
 
     @Override
@@ -296,17 +297,30 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
                 // The user has already clicked 'sign-in' so we attempt to
                 // resolve all
                 // errors until the user is signed in, or they cancel.
-                resolveSignInError();
+                try {
+                    resolveSignInError();
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     private void signInWithGplus() {
         if (!mGoogleApiClient.isConnecting()) {
-            mSignInClicked = true;
-            resolveSignInError();
-            mLoginSessionHandler.login(mGoogleApiClient);
-            responseHandler();
+            if (mConnectionResult == null) {//is connected
+                mLoginSessionHandler.login(mGoogleApiClient);
+            }else {
+                try {
+                    mSignInClicked = true;
+                    resolveSignInError();
+                }catch(IntentSender.SendIntentException e){
+                    mSignInClicked = false;
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            signOutWithGPlus();
         }
     }
 
@@ -319,7 +333,7 @@ public class SocialLogin extends ActionBarActivity implements GoogleApiClient.Co
         }
     }
 
-    private void resolveSignInError() {
+    private void resolveSignInError () throws IntentSender.SendIntentException {
         if (mConnectionResult.hasResolution()) {
             try {
                 mIntentInProgress = true;

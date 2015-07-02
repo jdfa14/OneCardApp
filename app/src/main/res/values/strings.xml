@@ -19,7 +19,7 @@
     <string name="logo_content">Logo</string>
 
         <!-- Social btns text -->
-    <string name="com_facebook_loginview_log_out_button">Conectar </string>
+    <string name="com_facebook_loginview_log_out_button">Desconectar </string>
     <string name="com_facebook_loginview_log_in_button">Desconectar </string>
     <string name="com_facebook_loginview_log_in_button_long">Conectar con Facebook </string>
 

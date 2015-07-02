@@ -1,5 +1,6 @@
 package mx.onecard.onecardapp;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
  */
 public class LoginSessionHandler {
     private static LoginSessionHandler instance = new LoginSessionHandler();    // Instancia para SINGLETON
+    private static ResponseListener mListener;
     private AccessToken fbAccesToken;                                    // Access token de facebook
     private TwitterSession twitterSession;                               // Sesion de twitter
     private GoogleApiClient googleApiClient;                             // Api de Google para iniciar sesion
@@ -37,7 +39,6 @@ public class LoginSessionHandler {
     private DATASTATE loginIn = DATASTATE.DATA_LOADED;                   // Esperando respuesta del servidor
     private DATASTATE socialInfo = DATASTATE.DATA_LOADED;                // Esperando respuesta del proceso asincrono para obtener email
     private Bundle data;
-    private RESPONSE lastLoginResponse;
 
     public enum SOCIAL {
         NONE,               // email and psw
@@ -78,8 +79,13 @@ public class LoginSessionHandler {
     public static int LOGIN_NEW_USER = 101;
     public static int LOGIN_REGISTERED_USER = 102;
 
-    public static LoginSessionHandler getInstance() {
+    public static LoginSessionHandler getInstance(Activity activity) {
+        setListener((ResponseListener)activity);
         return instance;
+    }
+
+    public static void setListener(ResponseListener mListener){
+        LoginSessionHandler.mListener = mListener;
     }
 
     protected LoginSessionHandler() {
@@ -96,22 +102,21 @@ public class LoginSessionHandler {
     }
 
     public void login(AccessToken fbAccesToken) {
-        fbAccesToken = fbAccesToken;
+        this.fbAccesToken = fbAccesToken;
         login(SOCIAL.FACEBOOK);
     }
 
     public void login(TwitterSession twitterSession) {
-        twitterSession = twitterSession;
+        this.twitterSession = twitterSession;
         login(SOCIAL.TWITTER);
     }
 
     public void login(GoogleApiClient googleApiClient) {
-        googleApiClient = googleApiClient;
+        this.googleApiClient = googleApiClient;
         login(SOCIAL.GOOGLE);
     }
 
     private void login(SOCIAL kind) {
-        lastLoginResponse = RESPONSE.NO_RESPONSE;   // Inicializamos ene stado neutro donde no hay respuesta
         data = new Bundle();                        // Nuevo set de parametros
         JSONObject result;// The json result from web services
 
@@ -202,16 +207,14 @@ public class LoginSessionHandler {
                 //TODO aqui para autentificar y obtener recursos
                 loadData();
             } else {
-                lastLoginResponse = RESPONSE.FAIL_WRONG_CREDENTIALS;
+                mListener.responseListener(RESPONSE.FAIL_WRONG_CREDENTIALS);
             }
         } catch (JSONException e) {
             setError(e.getMessage());
         }
     }
 
-    public RESPONSE getLastResponse() {
-        return lastLoginResponse;
-    }
+
 
     // TODO completar estas funciones que debe cargar los numeros de tarjeta, nombre del cliente y cosas similares de servicios externos
     private void loadData() {
@@ -223,15 +226,18 @@ public class LoginSessionHandler {
     }
 
     private void registerUser(String email) {                // Registrar un usuario nuevo en la tabla
-        lastLoginResponse = RESPONSE.SUCCESS_NEW_USER;      // Tipo de respuesta
         socialInfo = DATASTATE.DATA_LOADED;                 // La informacion ya se ha cargado
         data.putString("email", email);                      // Se pone el email
+        mListener.responseListener(RESPONSE.SUCCESS_NEW_USER);
     }
 
     private void setError(String error) {
-        lastLoginResponse = RESPONSE.FAIL_ERROR;
         socialInfo = DATASTATE.DATA_LOADED;
         data.putString("error", error);
+        mListener.responseListener(RESPONSE.FAIL_ERROR);
     }
 
+    public interface ResponseListener{
+        void responseListener(RESPONSE response);
+    }
 }
