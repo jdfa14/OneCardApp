@@ -23,7 +23,9 @@
             android:drawableLeft="@drawable/email_icon"
             android:drawableStart="@drawable/email_icon"
             android:hint="@string/reg_email_hint"
+            android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
+            android:nextFocusDown="@+id/reg_psw_textbox"
             android:padding="10dp"
             android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
@@ -36,7 +38,9 @@
             android:drawableLeft="@drawable/password_icon"
             android:drawableStart="@drawable/password_icon"
             android:hint="@string/reg_password_hint"
+            android:imeOptions="actionNext"
             android:inputType="textPassword"
+            android:nextFocusDown="@+id/reg_psw_confirm_textbox"
             android:padding="10dp"
             android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
@@ -49,7 +53,9 @@
             android:drawableLeft="@drawable/password_icon"
             android:drawableStart="@drawable/password_icon"
             android:hint="@string/reg_password_confirm_hint"
+            android:imeOptions="actionNext"
             android:inputType="textPassword"
+            android:nextFocusDown="@+id/reg_card_no_textbox"
             android:padding="10dp"
             android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
@@ -62,7 +68,9 @@
             android:drawableLeft="@drawable/card_icon"
             android:drawableStart="@drawable/card_icon"
             android:hint="@string/reg_card_hint"
+            android:imeOptions="actionDone"
             android:inputType="number"
+            android:nextFocusDown="@+id/reg_create_account_button"
             android:padding="10dp"
             android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
