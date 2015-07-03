@@ -25,6 +25,7 @@
             android:hint="@string/reg_email_hint"
             android:inputType="textEmailAddress"
             android:padding="10dp"
+            android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
 
         <EditText
@@ -37,6 +38,7 @@
             android:hint="@string/reg_password_hint"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
 
         <EditText
@@ -49,6 +51,7 @@
             android:hint="@string/reg_password_confirm_hint"
             android:inputType="textPassword"
             android:padding="10dp"
+            android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
 
         <EditText
@@ -61,14 +64,15 @@
             android:hint="@string/reg_card_hint"
             android:inputType="number"
             android:padding="10dp"
+            android:tag="@string/reg_tag_invalid"
             android:textColorHint="#bbbbbb" />
 
         <Button
             android:id="@+id/reg_create_account_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reg_create_account_button"
-            android:background="@drawable/button_default_bg"/>
+            android:background="@drawable/button_default_bg"
+            android:text="@string/reg_create_account_button" />
     </LinearLayout>
 
 </RelativeLayout>

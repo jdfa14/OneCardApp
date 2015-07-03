@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="reg_tag_invalid">0</integer>
+    <integer name="reg_tag_valid">1</integer>
+</resources>

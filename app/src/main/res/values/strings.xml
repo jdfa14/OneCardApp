@@ -51,6 +51,14 @@
     <string name="reg_email_hint">Correo electronico</string>
     <string name="reg_password_hint">Contraseña</string>
     <string name="reg_password_confirm_hint">Confirma contraseña</string>
-    <string name="reg_card_hint">1234-1234-1234-1234</string>
+    <string name="reg_card_hint">506223412341234</string>
+
+    <string name="reg_tag_invalid">0</string>
+    <string name="reg_tag_valid">1</string>
+
+    <string name="reg_error_email">formato de correo invalido</string>
+    <string name="reg_error_password">La contraseña debe ser de 6 a 20 caracteres, 1 mayuscula, 1 minutscula y 1 numero</string>
+    <string name="reg_error_password_match">Las contraseñas deben ser iguales</string>
+    <string name="reg_error_card">Numero de tarjeta invalido</string>
 
 </resources>

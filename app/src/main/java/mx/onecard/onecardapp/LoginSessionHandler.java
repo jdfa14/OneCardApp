@@ -2,16 +2,12 @@ package mx.onecard.onecardapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -36,8 +32,6 @@ public class LoginSessionHandler {
     private TwitterSession twitterSession;                               // Sesion de twitter
     private GoogleApiClient googleApiClient;                             // Api de Google para iniciar sesion
     private STATE signed = STATE.LOG_OFF;                                // Estado en que se encuentra el usuario
-    private DATASTATE loginIn = DATASTATE.DATA_LOADED;                   // Esperando respuesta del servidor
-    private DATASTATE socialInfo = DATASTATE.DATA_LOADED;                // Esperando respuesta del proceso asincrono para obtener email
     private Bundle data;
 
     public enum SOCIAL {
@@ -66,18 +60,6 @@ public class LoginSessionHandler {
         LOGIN_IN,                   // Estado intermedio cunado se activo un proceso asincrono para iniciar sesion
         LOGGED_IN                   // Estado cuando fue confirmado que se inicio la sesion en el proceso asincrono
     }
-
-    private enum DATASTATE {
-        DATA_LOADED,
-        DATA_LOADING
-    }
-
-    private String email;
-    private String password;
-
-    public static int LOGIN_FAIL = 100;
-    public static int LOGIN_NEW_USER = 101;
-    public static int LOGIN_REGISTERED_USER = 102;
 
     public static LoginSessionHandler getInstance(Activity activity) {
         setListener((ResponseListener)activity);
@@ -131,7 +113,6 @@ public class LoginSessionHandler {
 
         try {
             if (result.getString("action").equals("sign_up")) {
-                socialInfo = DATASTATE.DATA_LOADING;
                 switch (kind) {
                     case FACEBOOK: {
                         GraphRequest request = GraphRequest.newMeRequest(
@@ -221,18 +202,12 @@ public class LoginSessionHandler {
 
     }
 
-    private void prompRegisterActivity(String email) {// Cosa que solo llamara a la activity de nuevo usuario
-
-    }
-
     private void registerUser(String email) {                // Registrar un usuario nuevo en la tabla
-        socialInfo = DATASTATE.DATA_LOADED;                 // La informacion ya se ha cargado
         data.putString("email", email);                      // Se pone el email
         mListener.responseListener(RESPONSE.SUCCESS_NEW_USER);
     }
 
     private void setError(String error) {
-        socialInfo = DATASTATE.DATA_LOADED;
         data.putString("error", error);
         mListener.responseListener(RESPONSE.FAIL_ERROR);
     }
