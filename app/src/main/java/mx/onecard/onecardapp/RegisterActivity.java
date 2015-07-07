@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import mx.onecard.input.Validator.EditTextValidator;
+import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
 public class RegisterActivity
@@ -22,10 +23,13 @@ public class RegisterActivity
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            EditText emailBtn = (EditText) findViewById(R.id.reg_email_textbox);
-            emailBtn.setText(extras.getString("email"));
-            if(findViewById(R.id.reg_psw_textbox).requestFocus())
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            if(extras.containsKey("email")) {
+                ((EditText) findViewById(R.id.reg_email_textbox)).setText(extras.getString("email"));
+                if (findViewById(R.id.reg_psw_textbox).requestFocus())
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            }
+
         }else{
             if(findViewById(R.id.reg_email_textbox).requestFocus())
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -63,39 +67,60 @@ public class RegisterActivity
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus && !((EditText)v).getText().toString().equals("") ) {// en lostfocus y no vacio
-            switch (v.getId()) {
-                case R.id.reg_email_textbox: {
-                    if (EditTextValidator.validateEmail((EditText) v, getResources().getString(R.string.reg_error_email))) {
-                        v.setTag(getResources().getString(R.string.reg_tag_valid));
-                    } else {
-                        v.setTag(getResources().getString(R.string.reg_tag_invalid));
+        if (!hasFocus)
+            if (!((EditText) v).getText().toString().equals("")) {// en lostfocus y no vacio
+                switch (v.getId()) {
+                    case R.id.reg_email_textbox: {
+                        if (EditTextValidator.validateEmail((EditText) v, getResources().getString(R.string.reg_error_email))) {
+                            v.setTag(getResources().getString(R.string.reg_tag_valid));
+                        } else {
+                            v.setTag(getResources().getString(R.string.reg_tag_invalid));
+                        }
+                        break;
                     }
-                    break;
-                }
-                case R.id.reg_psw_textbox: {
-                    if(EditTextValidator.validatePassword((EditText) v, getResources().getString(R.string.reg_error_password))){
-                        v.setTag(getResources().getString(R.string.reg_tag_valid));
-                    }else{
-                        v.setTag(getResources().getString(R.string.reg_tag_invalid));
+                    case R.id.reg_psw_textbox: {
+                        if (EditTextValidator.validatePassword((EditText) v, getResources().getString(R.string.reg_error_password))) {
+                            v.setTag(getResources().getString(R.string.reg_tag_valid));
+                        } else {
+                            v.setTag(getResources().getString(R.string.reg_tag_invalid));
+                        }
+                        break;
                     }
-                    break;
-                }
 
-                case R.id.reg_psw_confirm_textbox:{
-                    if(EditTextValidator.validateMatchPasswords((EditText) findViewById(R.id.reg_psw_textbox), (EditText) v, getResources().getString(R.string.reg_error_password_match))){
-                        v.setTag(getResources().getString(R.string.reg_tag_valid));
-                    }else{
-                        v.setTag(getResources().getString(R.string.reg_tag_invalid));
+                    case R.id.reg_psw_confirm_textbox: {
+                        if (EditTextValidator.validateMatchPasswords((EditText) findViewById(R.id.reg_psw_textbox), (EditText) v, getResources().getString(R.string.reg_error_password_match))) {
+                            v.setTag(getResources().getString(R.string.reg_tag_valid));
+                        } else {
+                            v.setTag(getResources().getString(R.string.reg_tag_invalid));
+                        }
+                        break;
                     }
+                    case R.id.reg_card_no_textbox: {
+                        if (EditTextValidator.validateCardNumber((EditText) v, getResources().getString(R.string.reg_error_card))) {
+                            v.setTag(getResources().getString(R.string.reg_tag_valid));
+                        } else {
+                            v.setTag(getResources().getString(R.string.reg_tag_invalid));
+                        }
+                        break;
+                    }
+                }
+            }else{
+                v.setTag(getResources().getString(R.string.reg_tag_invalid));
+            }
+    }
+
+    private void logout(){
+        Bundle extras = getIntent().getExtras();
+        if(extras.containsKey("social")){
+            switch ((SocialNetworkSessionHandler.SOCIAL)extras.get("social")){
+                case FACEBOOK:{
+
                     break;
                 }
-                case R.id.reg_card_no_textbox:{
-                    if(EditTextValidator.validateCardNumber((EditText) v, getResources().getString(R.string.reg_error_password))){
-                        v.setTag(getResources().getString(R.string.reg_tag_valid));
-                    }else{
-                        v.setTag(getResources().getString(R.string.reg_tag_invalid));
-                    }
+                case GOOGLE:{
+                    break;
+                }
+                case TWITTER:{
                     break;
                 }
             }
