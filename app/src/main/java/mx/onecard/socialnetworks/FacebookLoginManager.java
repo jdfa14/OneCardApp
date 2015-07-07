@@ -30,7 +30,7 @@ public class FacebookLoginManager implements FacebookCallback<LoginResult>, Grap
     private FacebookLoginListener mFLListener;
     private FacebookRequestListener mFRListener;
     private List<String> defaultPermissions = Arrays.asList("email", "public_profile");
-    private CallbackManager mCallbacManager;
+    private CallbackManager mCallbackManager;
     private LoginManager mLoginManager;
 
     public static FacebookLoginManager getInstance() {
@@ -38,9 +38,10 @@ public class FacebookLoginManager implements FacebookCallback<LoginResult>, Grap
     }
 
     protected FacebookLoginManager() {
-        mCallbacManager = CallbackManager.Factory.create();
+        mCallbackManager = CallbackManager.Factory.create();
         mLoginManager = LoginManager.getInstance();
-        mLoginManager.registerCallback(mCallbacManager, this);
+        mLoginManager.registerCallback(mCallbackManager, this);
+
     }
 
     public void logInWithReadPermissions(Activity activity) {
@@ -73,7 +74,7 @@ public class FacebookLoginManager implements FacebookCallback<LoginResult>, Grap
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCallbacManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void newMeRequest(Bundle parameters, FacebookRequestListener mFRListener) {
