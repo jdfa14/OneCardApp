@@ -1,6 +1,7 @@
 package mx.onecard.socialnetworks;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+
 /**
  * Created by OneCardAdmon on 30/06/2015.
  * Manejará el inicio de sesion y obtendrá los parametros necesarios
@@ -42,7 +45,6 @@ public class SocialNetworkSessionHandler implements FacebookLoginManager.Faceboo
     private Bundle data;
 
     public enum SOCIAL {
-        USERAUTH,               // email and psw
         FACEBOOK,           // facebook login
         GOOGLE,             // google login
         TWITTER,             //
@@ -60,6 +62,18 @@ public class SocialNetworkSessionHandler implements FacebookLoginManager.Faceboo
         FAIL_CANT_CONNECT,
         SUCCESS_NEW_USER,
         SUCCESS_REGISTERED_USER
+    }
+
+    public static void initialize(Context applicationContext, Activity currentActivity){
+        //TODO Hacer que esto cargue desde aqui, TEST/PRUEBAS
+        /*
+        FacebookSdk.sdkInitialize(applicationContext);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(
+                applicationContext.getResources().getString(R.string.twitter_consumer_key),
+                applicationContext.getResources().getString(R.string.twitter_consumer_secret));
+        Fabric.with(applicationContext, new Twitter(authConfig));
+        */
+        getInstance(currentActivity);       //Para crea todas las instancias en este momento
     }
 
     public static SocialNetworkSessionHandler getInstance(Activity activity) {
@@ -303,8 +317,6 @@ public class SocialNetworkSessionHandler implements FacebookLoginManager.Faceboo
     //TODO Mejorar esto para que solo sea para el tipo de servicio que lo pidio, Facebook, Goolge o Twitter
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (toBeRequested){
-            case USERAUTH:
-                break;
             case FACEBOOK:
                 mFacebookLoginManager.onActivityResult(requestCode,resultCode,data);
                 break;

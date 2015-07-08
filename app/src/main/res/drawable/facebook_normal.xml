@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval" >
+            <solid android:color="@color/com_facebook_button_background_color" />
+            <padding android:top="@dimen/padding_custom_button"
+                android:bottom="@dimen/padding_custom_button"
+                android:left="@dimen/padding_custom_button"
+                android:right="@dimen/padding_custom_button"/>
+        </shape>
+    </item>
+    <item >
+        <bitmap android:src="@drawable/com_facebook_button_icon" android:gravity="left|fill_horizontal|fill_vertical"/>
+    </item>
+</layer-list>

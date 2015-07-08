@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBG"
-    tools:context="mx.onecard.onecardapp.SocialLogin">
+    tools:context="mx.onecard.onecardapp.SocialLoginActivity">
 
     <FrameLayout
         android:id="@+id/login_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_centerInParent="true"
         android:animateLayoutChanges="true"
-        android:padding="30dp">
+        android:padding="40dp">
 
         <LinearLayout
             android:id="@+id/login_linear"
@@ -32,23 +32,53 @@
                 android:contentDescription="@string/logo_content"
                 android:src="@drawable/logo_one_card" />
 
-            <Button
-                android:id="@+id/facebook_login_button2"
-                android:layout_width="wrap_content"
+
+            <EditText
+                android:id="@+id/login_email_textbox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Facebook Custom login 2"/>
+                android:ems="10"
+                android:inputType="textEmailAddress" />
 
-            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/facebook_login_button"
+            <EditText
+                android:id="@+id/login_password_textbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/login_auth_button"
                 android:layout_width="fill_parent"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:textSize="@dimen/facebook_login_button_text_size"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_default_bg" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Conectar con:"
+                android:layout_gravity="center_horizontal"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/facebook_login_button2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/button_facebook_custom"/>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/google_login_button2"

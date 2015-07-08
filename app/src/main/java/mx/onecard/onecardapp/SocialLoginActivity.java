@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -23,9 +22,7 @@ import java.util.List;
 import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
-public class SocialLogin extends AppCompatActivity implements
-        /*GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,*/
+public class SocialLoginActivity extends AppCompatActivity implements
         SocialNetworkSessionHandler.OnResponseListener {
 
     private final int REQUEST_LOGIN = 1250;
@@ -36,7 +33,7 @@ public class SocialLogin extends AppCompatActivity implements
     // Handler for login
     private SocialNetworkSessionHandler mSocialNetworkSessionHandler;
 
-    private static final String TAG = "SocialLogin";
+    private static final String TAG = "SocialLoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +63,13 @@ public class SocialLogin extends AppCompatActivity implements
         mSocialNetworkSessionHandler = SocialNetworkSessionHandler.getInstance(this);
         mSocialNetworkSessionHandler.setListener(this);
 
-        final List<String> permissions = new ArrayList<>();
-        permissions.add("public_profile");
-        permissions.add("email");
-
-        findViewById(R.id.facebook_login_button2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSocialNetworkSessionHandler.loginWithFacebook(SocialLogin.this, permissions);
-            }
+        findViewById(R.id.facebook_login_button2).setOnClickListener(v -> {
+            List<String> permissions = new ArrayList<>();
+            permissions.add("public_profile");
+            permissions.add("email");
+            mSocialNetworkSessionHandler.loginWithFacebook(SocialLoginActivity.this, permissions);
         });
+        findViewById(R.id.google_login_button2).setOnClickListener(v -> mSocialNetworkSessionHandler.loginWithGooglePlus());
 
         //Twitter Stuff
         mTwitterLoginBtn = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
@@ -95,19 +89,7 @@ public class SocialLogin extends AppCompatActivity implements
         });
 
         // Google Stuff
-        Button mGoogleLoginBtn = (Button) findViewById(R.id.google_login_button2);
-        mGoogleLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //signInWithGplus();
-                mSocialNetworkSessionHandler.loginWithGooglePlus();
-            }
-        });
 
-        /*mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();*/
     }
 
     @Override
@@ -142,6 +124,9 @@ public class SocialLogin extends AppCompatActivity implements
                 mSocialNetworkSessionHandler.logOut();
             }else if (data != null){
                 //TODO aqui mandar llamar a inicio de sesion por usuario y password EN data
+                String email = data.getStringExtra("email");
+                String password = data.getStringExtra("password");
+                login(email,password);
             }
             return;
         }
@@ -150,6 +135,18 @@ public class SocialLogin extends AppCompatActivity implements
     }
 
     //ACTIVITY FUNCTIONS
+
+    protected void login(String email, String password){
+        //TODO Comunicación con el servidor. Se invoca metodo y se
+        onServerResponse();
+    }
+
+    protected void onServerResponse(){
+        Intent intent = new Intent(this,NavDrawerActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     //TODO debe ser una intetrface activada desde el mSocialNetworkSessionHandler
     public void onResponseListener(SocialNetworkSessionHandler.RESPONSE response) {
         switch (response) {

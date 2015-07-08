@@ -1,7 +1,7 @@
 package mx.onecard.input;
 
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Patterns;
 import android.widget.EditText;
 
 import java.util.regex.Matcher;
@@ -24,11 +24,8 @@ public class Validator {
      * )			        # End of group
      */
 
-    private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static final String PASSWORD_PATTERN =
-            "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%]).{6,20})";
+
+    private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%]).{6,20})";
 
     private static final String CREDIT_MASTER_CARD_PATTERN = "^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$";
     private static final String CREDIT_CARNET_ONECARD = "^(5062|5063)[0-9]{12}$";
@@ -41,10 +38,12 @@ public class Validator {
         GIF_CARD
     }
 
+    public static boolean isValidURL(String url){
+        return Patterns.WEB_URL.matcher(url).matches();
+    }
+
     public static boolean isValidEmail(String email) {
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public static boolean isValidPassword(String password) {
