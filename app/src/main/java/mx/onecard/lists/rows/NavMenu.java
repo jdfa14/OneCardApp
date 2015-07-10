@@ -1,15 +1,15 @@
-package mx.onecard.onecardapp;
+package mx.onecard.lists.rows;
 
 /**
  * Created by OneCardAdmon on 29/06/2015.
  * Esta clase agrupara los elementos de los renglones de la ListView
  * de la activity Navigation Drawer
  */
-public class RowItemDrawer {
+public class NavMenu {
     private String name;
     private int iconId;
 
-    public RowItemDrawer(String name, int iconId) {
+    public NavMenu(String name, int iconId) {
         this.name = name;
         this.iconId = iconId;
     }
@@ -18,15 +18,8 @@ public class RowItemDrawer {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getIconId() {
         return iconId;
     }
 
-    public void setIconId(int iconId) {
-        this.iconId = iconId;
-    }
 }

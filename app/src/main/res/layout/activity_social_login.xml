@@ -3,102 +3,134 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBG"
+    android:padding="35dp"
     tools:context="mx.onecard.onecardapp.SocialLoginActivity">
 
-    <FrameLayout
-        android:id="@+id/login_frame"
+    <LinearLayout
+        android:id="@+id/login_linear"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
         android:animateLayoutChanges="true"
-        android:padding="40dp">
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:contentDescription="@string/logo_content"
+            android:src="@drawable/logo_one_card" />
+
+
+        <EditText
+            android:id="@+id/login_email_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/login_password_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/login_auth_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_default_bg"
+            android:text="@string/login_sign_in_button" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/login_auth_register"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_default_bg"
+            android:text="@string/login_register_button" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/login_connect_with_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
-            android:id="@+id/login_linear"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:paddingBottom="15dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="15dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:contentDescription="@string/logo_content"
-                android:src="@drawable/logo_one_card" />
-
-
-            <EditText
-                android:id="@+id/login_email_textbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
-
-            <EditText
-                android:id="@+id/login_password_textbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:ems="10"
-                android:inputType="textPassword" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/login_auth_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_default_bg" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Conectar con:"
-                android:layout_gravity="center_horizontal"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:id="@+id/facebook_login_button2"
+                android:layout_width="@dimen/login_social_button_size"
+                android:layout_height="@dimen/login_social_button_size"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/button_facebook_custom" />
 
-                <Button
-                    android:id="@+id/facebook_login_button2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/button_facebook_custom"/>
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
+            <Space
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
 
             <Button
                 android:id="@+id/google_login_button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/login_social_button_size"
+                android:layout_height="@dimen/login_social_button_size"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/common_signin_btn_text_dark"
-                android:text="@string/common_signin_button_text_long"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/google_login_button_text_size"
-                android:textStyle="bold" />
+                android:background="@drawable/button_google_custom" />
 
-            <com.twitter.sdk.android.core.identity.TwitterLoginButton
-                android:id="@+id/twitter_login_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp" />
+            <Space
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/twitter_login_button2"
+                android:layout_width="@dimen/login_social_button_size"
+                android:layout_height="@dimen/login_social_button_size"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/button_twitter_custom" />
 
         </LinearLayout>
-    </FrameLayout>
+
+
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:id="@+id/twitter_login_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="invisible" />
+
+    </LinearLayout>
 </RelativeLayout>

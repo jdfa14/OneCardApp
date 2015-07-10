@@ -1,4 +1,4 @@
-package mx.onecard.onecardapp;
+package mx.onecard.lists.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,13 +10,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import mx.onecard.lists.rows.NavMenu;
+import mx.onecard.onecardapp.R;
+
 /**
  * Created by OneCardAdmon on 29/06/2015.
  * Adaptador para los elementos de la lista
  */
-public class DrawerListAdapter extends ArrayAdapter<RowItemDrawer> {
+public class NavDrawerListAdapter extends ArrayAdapter<NavMenu> {
 
-    public DrawerListAdapter(Context context, List objects) {
+    public NavDrawerListAdapter(Context context, List objects) {
         super(context, 0, objects);
     }
 
@@ -26,14 +29,14 @@ public class DrawerListAdapter extends ArrayAdapter<RowItemDrawer> {
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater)parent.getContext().
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.row_list_view, null);
+            convertView = inflater.inflate(R.layout.item_nav_drawer, null);
         }
 
 
         ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
         TextView name = (TextView) convertView.findViewById(R.id.name);
 
-        RowItemDrawer item = getItem(position);
+        NavMenu item = getItem(position);
         icon.setImageResource(item.getIconId());
         name.setText(item.getName());
 

@@ -8,6 +8,6 @@
         </shape>
     </item>
     <item >
-        <bitmap android:src="@drawable/square_facebook" android:alpha="0.7"/>
+        <bitmap android:src="@drawable/square_google_plus" android:alpha="0.7"/>
     </item>
 </layer-list>

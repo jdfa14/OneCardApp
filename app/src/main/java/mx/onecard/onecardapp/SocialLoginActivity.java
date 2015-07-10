@@ -135,7 +135,6 @@ public class SocialLoginActivity extends AppCompatActivity implements
     }
 
     //ACTIVITY FUNCTIONS
-
     protected void login(String email, String password){
         //TODO Comunicación con el servidor. Se invoca metodo y se
         onServerResponse();

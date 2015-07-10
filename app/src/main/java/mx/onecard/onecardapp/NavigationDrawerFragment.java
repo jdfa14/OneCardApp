@@ -18,11 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import mx.onecard.lists.adapters.NavDrawerListAdapter;
+import mx.onecard.lists.rows.NavMenu;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -96,10 +98,10 @@ public class NavigationDrawerFragment extends Fragment {
 
         //Recursos para los titulos del menu
         String[] menuTitles = getResources().getStringArray(R.array.menu);
-        ArrayList<RowItemDrawer> items = new ArrayList<RowItemDrawer>();
-        items.add(new RowItemDrawer(menuTitles[0],R.drawable.home_icon));
-        items.add(new RowItemDrawer(menuTitles[1],R.drawable.credit_card_icon));
-        items.add(new RowItemDrawer(menuTitles[2],R.drawable.settings_icon));
+        ArrayList<NavMenu> items = new ArrayList<NavMenu>();
+        items.add(new NavMenu(menuTitles[0],R.drawable.home_icon));
+        items.add(new NavMenu(menuTitles[1],R.drawable.credit_card_icon));
+        items.add(new NavMenu(menuTitles[2],R.drawable.settings_icon));
 
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -107,7 +109,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new DrawerListAdapter(getActivity(),items));
+        mDrawerListView.setAdapter(new NavDrawerListAdapter(getActivity(),items));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }

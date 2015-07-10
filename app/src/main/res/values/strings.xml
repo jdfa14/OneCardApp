@@ -60,5 +60,9 @@
     <string name="reg_error_password">La contraseña debe ser de 6 a 20 caracteres, 1 mayuscula, 1 minutscula y 1 numero</string>
     <string name="reg_error_password_match">Las contraseñas deben ser iguales</string>
     <string name="reg_error_card">Numero de tarjeta invalido</string>
+    <string name="row_cards_image_content">card_image</string>
+    <string name="login_connect_with_label">Conectar con:</string>
+    <string name="login_sign_in_button">Iniciar sesion</string>
+    <string name="login_register_button">registrarse</string>
 
 </resources>
