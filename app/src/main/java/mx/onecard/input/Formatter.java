@@ -5,14 +5,14 @@ import java.util.Locale;
 
 /**
  * Created by OneCardAdmon on 10/07/2015.
- * Formato a distintos inputs
+ * Ayudara a dar formato a diferente strings
  */
-public class Format {
+public class Formatter {
 
     /**
      * Limpia un numro con formato en string, p.e. $250.20 => 250.20 o 78-58#.25 => 7858.25
-     * @param formattedNumber
-     * @return Numero limpio
+     * @param formattedNumber '$ 52.69' o '81-75-452'
+     * @return '52.69' o '8175452'
      */
     public static String cleanNumberFormat(String formattedNumber) {
         char[] stringCharArray = formattedNumber.toCharArray();

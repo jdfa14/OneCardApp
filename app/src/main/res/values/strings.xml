@@ -42,6 +42,15 @@
         <item>Consultar Movimientos</item>
         <item>Configuracion</item>
     </string-array>
+
+
+    <!-- Seleccion de tipo de transaccion a mostrar -->
+    <string-array name="transaction_type">
+        <item>Últimos 10 movimientos</item>
+        <item>Mes actual</item>
+        <item>Mes anterior</item>
+    </string-array>
+
     <string name="title_activity_register">RegisterActivity</string>
     <string name="reg_email">Correo Electronico</string>
     <string name="reg_password">Contraseña</string>
@@ -60,9 +69,12 @@
     <string name="reg_error_password">La contraseña debe ser de 6 a 20 caracteres, 1 mayuscula, 1 minutscula y 1 numero</string>
     <string name="reg_error_password_match">Las contraseñas deben ser iguales</string>
     <string name="reg_error_card">Numero de tarjeta invalido</string>
+
     <string name="row_cards_image_content">card_image</string>
     <string name="login_connect_with_label">Conectar con:</string>
     <string name="login_sign_in_button">Iniciar sesion</string>
     <string name="login_register_button">registrarse</string>
+    <string name="title_activity_transactions">TransactionsActivity</string>
+    <string name="content_trans_card">Tarjeta</string>
 
 </resources>

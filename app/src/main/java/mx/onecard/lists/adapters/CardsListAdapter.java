@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import mx.onecard.input.Formatter;
 import mx.onecard.lists.rows.Card;
 import mx.onecard.onecardapp.R;
 
@@ -37,8 +38,12 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
 
         Card card = getItem(position);
         cardImage.setImageResource(card.getImageResourceId());
-        balance.setText("");
-
-        return super.getView(position, convertView, parent);
+        balance.setText(Formatter.toStringCurrency(card.getBalance()));
+        product.setText(card.getProduct());
+        cardNumber.setText(card.getCardNumber());
+        //TODO FALTA MANIPULAR ON CLICK
+        // En la seleccion del renglon se debe ir a la pantalla de saldo de dicha tarjeta donde se mostraran los movimientos
+        // dicha tarjeta
+        return convertView;
     }
 }

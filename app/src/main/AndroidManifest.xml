@@ -47,6 +47,10 @@
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
+        <activity
+            android:name=".TransactionsActivity"
+            android:label="@string/title_activity_transactions" >
+        </activity>
     </application>
 
 </manifest>

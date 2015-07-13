@@ -8,11 +8,11 @@ import mx.onecard.onecardapp.R;
  */
 public class Card {
     private String product;         // Despensa
-    private int cardNumber;         // 5236
+    private String cardNumber;         // 5236
     private int imageResourceId;    // ID del recurso drawable
     private double balance;
 
-    public Card(int cardNumber, int product) {
+    public Card(String cardNumber, int product) {
         this.cardNumber = cardNumber;
         setProduct(product);
     }

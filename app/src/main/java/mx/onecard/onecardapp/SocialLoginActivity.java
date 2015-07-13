@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -19,11 +20,13 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.onecard.input.Validator;
 import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
 public class SocialLoginActivity extends AppCompatActivity implements
-        SocialNetworkSessionHandler.OnResponseListener {
+        SocialNetworkSessionHandler.OnResponseListener,
+        View.OnClickListener {
 
     private final int REQUEST_LOGIN = 1250;
 
@@ -34,6 +37,9 @@ public class SocialLoginActivity extends AppCompatActivity implements
     private SocialNetworkSessionHandler mSocialNetworkSessionHandler;
 
     private static final String TAG = "SocialLoginActivity";
+
+    private EditText emailTextBox;
+    private EditText passwordTextBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +64,16 @@ public class SocialLoginActivity extends AppCompatActivity implements
             }
         });
         layout.startAnimation(animation);
+        emailTextBox = (EditText) findViewById(R.id.login_email_textbox);
+        passwordTextBox = (EditText) findViewById(R.id.login_password_textbox);
 
         // Instancia de SessionHandler
         mSocialNetworkSessionHandler = SocialNetworkSessionHandler.getInstance(this);
         mSocialNetworkSessionHandler.setListener(this);
+
+        //asignando click listeners
+        findViewById(R.id.login_auth_button).setOnClickListener(this);
+        findViewById(R.id.login_auth_register_button).setOnClickListener(this);
 
         findViewById(R.id.facebook_login_button2).setOnClickListener(v -> {
             List<String> permissions = new ArrayList<>();
@@ -70,6 +82,7 @@ public class SocialLoginActivity extends AppCompatActivity implements
             mSocialNetworkSessionHandler.loginWithFacebook(SocialLoginActivity.this, permissions);
         });
         findViewById(R.id.google_login_button2).setOnClickListener(v -> mSocialNetworkSessionHandler.loginWithGooglePlus());
+        //findViewById(R.id.twitter_login_button2).setOnClickListener(v -> mSocialNetworkSessionHandler.loginWithTwitter());
 
         //Twitter Stuff
         mTwitterLoginBtn = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
@@ -119,14 +132,14 @@ public class SocialLoginActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_LOGIN){
-            if(resultCode == RESULT_CANCELED){
+        if (requestCode == REQUEST_LOGIN) {
+            if (resultCode == RESULT_CANCELED) {
                 mSocialNetworkSessionHandler.logOut();
-            }else if (data != null){
+            } else if (data != null) {
                 //TODO aqui mandar llamar a inicio de sesion por usuario y password EN data
                 String email = data.getStringExtra("email");
                 String password = data.getStringExtra("password");
-                login(email,password);
+                login(email, password);
             }
             return;
         }
@@ -135,13 +148,15 @@ public class SocialLoginActivity extends AppCompatActivity implements
     }
 
     //ACTIVITY FUNCTIONS
-    protected void login(String email, String password){
+    protected void login(String email, String password) {
         //TODO Comunicación con el servidor. Se invoca metodo y se
-        onServerResponse();
+        if(true){ // IF se valida el inicio de session
+            accessGranted();
+        }
     }
 
-    protected void onServerResponse(){
-        Intent intent = new Intent(this,NavDrawerActivity.class);
+    protected void accessGranted() {
+        Intent intent = new Intent(this, NavDrawerActivity.class);
         startActivity(intent);
         finish();
     }
@@ -171,6 +186,23 @@ public class SocialLoginActivity extends AppCompatActivity implements
             case SUCCESS_REGISTERED_USER: {
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.login_auth_button:
+                if(Validator.EditTextValidator.validateEmail(emailTextBox,getResources().getString(R.string.reg_error_email))){
+                    String email = emailTextBox.getText().toString();
+                    String password = passwordTextBox.getText().toString();
+                    login(email,password);
+                }
+                break;
+            case R.id.login_auth_register_button:
+                Intent intent = new Intent(this, RegisterActivity.class);
+                startActivityForResult(intent, REQUEST_LOGIN);
+                break;
         }
     }
 }
