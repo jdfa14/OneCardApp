@@ -5,7 +5,7 @@
     tools:context="mx.onecard.onecardapp.NavDrawerActivity$PlaceholderFragment">
 
     <ListView
-        android:id="@+id/navList"
+        android:id="@+id/frag_home_list"
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left|start"

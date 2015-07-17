@@ -2,7 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/row_list_view"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall">
 
     <TextView
         android:id="@+id/name"
@@ -11,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/icon"
         android:text="Item"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor="#fff" />
 
     <ImageView

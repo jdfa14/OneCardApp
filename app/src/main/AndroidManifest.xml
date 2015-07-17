@@ -51,6 +51,10 @@
             android:name=".TransactionsActivity"
             android:label="@string/title_activity_transactions" >
         </activity>
+        <activity
+            android:name="mx.onecard.lists.adapters.NavDrawActivity"
+            android:label="@string/title_activity_nav_draw" >
+        </activity>
     </application>
 
 </manifest>

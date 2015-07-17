@@ -42,12 +42,15 @@ public class TransactionsActivity extends ActionBarActivity {
     }
 
     void addSpinnerListener(){
-        ((Spinner)findViewById(R.id.trans_transaction_type_spinner)).setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(
-                    parent.getContext(),
-                    "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                    Toast.LENGTH_SHORT).show();
-            //TODO se debe hacer una nueva consulta a Card donde pedirá lo que se pide
+        ((Spinner)findViewById(R.id.trans_transaction_type_spinner)).setOnItemClickListener(new Spinner.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(
+                        parent.getContext(),
+                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                        Toast.LENGTH_SHORT).show();
+                //TODO se debe hacer una nueva consulta a Card donde pedirá lo que se pide
+            }
         });
     }
 }

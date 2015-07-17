@@ -76,5 +76,6 @@
     <string name="login_register_button">registrarse</string>
     <string name="title_activity_transactions">TransactionsActivity</string>
     <string name="content_trans_card">Tarjeta</string>
+    <string name="title_activity_nav_draw">NavDrawActivity</string>
 
 </resources>

@@ -18,9 +18,10 @@ import mx.onecard.onecardapp.R;
  * Adaptador para los elementos de la lista
  */
 public class NavDrawerListAdapter extends ArrayAdapter<NavMenu> {
-
-    public NavDrawerListAdapter(Context context, List objects) {
-        super(context, 0, objects);
+    private int layoutResource;
+    public NavDrawerListAdapter(Context context,int layoutResource , List objects) {
+        super(context,layoutResource, objects);
+        this.layoutResource = layoutResource;
     }
 
     @Override
@@ -29,10 +30,8 @@ public class NavDrawerListAdapter extends ArrayAdapter<NavMenu> {
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater)parent.getContext().
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_nav_drawer, null);
+            convertView = inflater.inflate(layoutResource, null);
         }
-
-
         ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
         TextView name = (TextView) convertView.findViewById(R.id.name);
 

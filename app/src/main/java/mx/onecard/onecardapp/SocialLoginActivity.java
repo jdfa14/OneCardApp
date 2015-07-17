@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.onecard.input.Validator;
+import mx.onecard.lists.adapters.NavDrawActivity;
 import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
@@ -75,13 +76,22 @@ public class SocialLoginActivity extends AppCompatActivity implements
         findViewById(R.id.login_auth_button).setOnClickListener(this);
         findViewById(R.id.login_auth_register_button).setOnClickListener(this);
 
-        findViewById(R.id.facebook_login_button2).setOnClickListener(v -> {
-            List<String> permissions = new ArrayList<>();
-            permissions.add("public_profile");
-            permissions.add("email");
-            mSocialNetworkSessionHandler.loginWithFacebook(SocialLoginActivity.this, permissions);
+        findViewById(R.id.facebook_login_button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> permissions = new ArrayList<>();
+                permissions.add("public_profile");
+                permissions.add("email");
+                mSocialNetworkSessionHandler.loginWithFacebook(SocialLoginActivity.this, permissions);
+            }
         });
-        findViewById(R.id.google_login_button2).setOnClickListener(v -> mSocialNetworkSessionHandler.loginWithGooglePlus());
+
+        findViewById(R.id.google_login_button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialNetworkSessionHandler.loginWithGooglePlus();
+            }
+        });
         //findViewById(R.id.twitter_login_button2).setOnClickListener(v -> mSocialNetworkSessionHandler.loginWithTwitter());
 
         //Twitter Stuff
@@ -118,18 +128,6 @@ public class SocialLoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_social_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
@@ -150,13 +148,13 @@ public class SocialLoginActivity extends AppCompatActivity implements
     //ACTIVITY FUNCTIONS
     protected void login(String email, String password) {
         //TODO Comunicación con el servidor. Se invoca metodo y se
-        if(true){ // IF se valida el inicio de session
+        if (true) { // IF se valida el inicio de session
             accessGranted();
         }
     }
 
     protected void accessGranted() {
-        Intent intent = new Intent(this, NavDrawerActivity.class);
+        Intent intent = new Intent(this, NavDrawActivity.class);
         startActivity(intent);
         finish();
     }
@@ -193,10 +191,10 @@ public class SocialLoginActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_auth_button:
-                if(Validator.EditTextValidator.validateEmail(emailTextBox,getResources().getString(R.string.reg_error_email))){
+                if (Validator.EditTextValidator.validateEmail(emailTextBox, getResources().getString(R.string.reg_error_email))) {
                     String email = emailTextBox.getText().toString();
                     String password = passwordTextBox.getText().toString();
-                    login(email,password);
+                    login(email, password);
                 }
                 break;
             case R.id.login_auth_register_button:
