@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import mx.onecard.lists.rows.NavMenu;
+import mx.onecard.lists.item.NavMenu;
 import mx.onecard.onecardapp.R;
 
 /**

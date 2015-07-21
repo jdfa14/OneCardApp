@@ -5,7 +5,7 @@
     android:background="@color/mainBG"
     android:gravity="center"
     android:orientation="vertical"
-    android:theme="@style/AppTheme"
+    android:theme="@style/myAppTheme"
     tools:context="mx.onecard.onecardapp.SlpashActivity">
 
     <LinearLayout

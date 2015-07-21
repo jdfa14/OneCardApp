@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import mx.onecard.input.Formatter;
-import mx.onecard.lists.rows.Card;
+import mx.onecard.lists.item.Card;
 import mx.onecard.onecardapp.R;
 
 /**
  * Created by OneCardAdmon on 10/07/2015.
  * Adapter para imprimir las tarjetas y sus datos
  */
+
 public class CardsListAdapter extends ArrayAdapter<Card> {
     public CardsListAdapter(Context context, int resource, List<Card> objects) {
         super(context, resource, objects);
@@ -38,7 +38,7 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
 
         Card card = getItem(position);
         cardImage.setImageResource(card.getImageResourceId());
-        balance.setText(Formatter.toStringCurrency(card.getBalance()));
+        balance.setText(card.getBalance());
         product.setText(card.getProduct());
         cardNumber.setText(card.getCardNumber());
         //TODO FALTA MANIPULAR ON CLICK

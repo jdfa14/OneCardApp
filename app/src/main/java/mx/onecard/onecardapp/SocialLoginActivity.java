@@ -3,8 +3,6 @@ package mx.onecard.onecardapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.onecard.input.Validator;
-import mx.onecard.lists.adapters.NavDrawActivity;
 import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 

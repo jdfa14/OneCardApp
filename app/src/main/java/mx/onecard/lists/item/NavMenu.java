@@ -1,4 +1,4 @@
-package mx.onecard.lists.rows;
+package mx.onecard.lists.item;
 
 /**
  * Created by OneCardAdmon on 29/06/2015.

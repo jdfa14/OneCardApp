@@ -1,16 +1,14 @@
 <resources>
-    <string name="app_name">OneCardApp</string>
-    <string name="title_activity_slpash">SlpashActivity</string>
+    <string name="app_name">One Card</string>
 
     <string name="hello_world">Hello world!</string>
+    <!-- Actions menu -->
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">LoginActivity</string>
 
     <!-- Social Network -->
     <string name="facebook_app_id">827935720625906</string>
     <string name="twitter_consumer_key">6g1huJecEp9QwVtk4mBnItLug</string>
     <string name="twitter_consumer_secret">CT3di3FOQWussd9nR89SMnZklZ3zdYz9UcJfWP42yPmnLFqidu</string>
-    <string name="title_activity_social_login">SocialLogin</string>
     <string name="google_app_id">693416510141-70qgl15e83omcel4ojvb0p9skk7nobea.apps.googleusercontent.com</string>
         <!-- Google + -->
     <string name="btn_login_from_google">Login with Google!!</string>
@@ -26,23 +24,19 @@
     <string name="common_signin_button_text">Conectar</string>
     <string name="common_signin_button_text_long">Conectar con Google+</string>
     <string name="tw__login_btn_txt">Conectar con Twitter </string>
-    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
 
-    <string-array name="menu">
+    <!-- Navigation Drawer Options -->
+    <string-array name="navigation_drawer_options">
         <item>Inicio</item>
         <item>Consultar Movimientos</item>
         <item>Configuracion</item>
     </string-array>
 
+    <string name="navigation_drawer_open">Abrir</string>
+    <string name="navigation_drawer_close">Cerrar</string>
+    <string name="title_navigation_drawer">Opciones</string>
 
     <!-- Seleccion de tipo de transaccion a mostrar -->
     <string-array name="transaction_type">
@@ -51,7 +45,6 @@
         <item>Mes anterior</item>
     </string-array>
 
-    <string name="title_activity_register">RegisterActivity</string>
     <string name="reg_email">Correo Electronico</string>
     <string name="reg_password">Contraseña</string>
     <string name="ref_password_confirm">Confirmar contraseña</string>
@@ -74,8 +67,9 @@
     <string name="login_connect_with_label">Conectar con:</string>
     <string name="login_sign_in_button">Iniciar sesion</string>
     <string name="login_register_button">registrarse</string>
-    <string name="title_activity_transactions">TransactionsActivity</string>
     <string name="content_trans_card">Tarjeta</string>
-    <string name="title_activity_nav_draw">NavDrawActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package mx.onecard.lists.adapters;
+package mx.onecard.onecardapp;
 
 import android.content.res.Configuration;
 import android.support.v4.view.GravityCompat;
@@ -6,36 +6,41 @@ import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import mx.onecard.lists.rows.NavMenu;
+import mx.onecard.lists.adapters.NavDrawerListAdapter;
+import mx.onecard.lists.item.NavMenu;
 import mx.onecard.onecardapp.R;
 
 public class NavDrawActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
     private ActionBarDrawerToggle mDrawerToggle;
+    private ListView mDrawerListView;
+
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mMenuTitles;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
 
-        mTitle = mDrawerTitle = getTitle();
-        mMenuTitles = getResources().getStringArray(R.array.menu);
+        mDrawerTitle = getTitle();
+        mMenuTitles = getResources().getStringArray(R.array.navigation_drawer_options);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.nav_drawerLayout);
         mDrawerListView = (ListView) findViewById(R.id.nav_listView);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -49,16 +54,23 @@ public class NavDrawActivity extends AppCompatActivity {
         mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
         // mDrawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.draw_list_item, getResources().getStringArray(R.array.transaction_type)));
 
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(mDrawerTitle);
+                //super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // forza a invocar onPrepareOptionsMenu()
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
+                //super.onDrawerClosed(drawerView);
                 getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
@@ -66,7 +78,9 @@ public class NavDrawActivity extends AppCompatActivity {
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+
         if (savedInstanceState == null) {
+            mTitle = mMenuTitles[0];
             selectItem(0);
         }
     }
@@ -83,16 +97,17 @@ public class NavDrawActivity extends AppCompatActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        /*switch (id){
-
-        }*/
+        switch (id){
+            case R.id.action_websearch :
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle(title);
-        getSupportActionBar().setTitle(mTitle);
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -127,8 +142,7 @@ public class NavDrawActivity extends AppCompatActivity {
         // Feedback visual de seleccion
         mDrawerListView.setItemChecked(position, true);
         // Cambiamos el nombre de la activity
-        String planet = getResources().getStringArray(R.array.menu)[position];
-        setTitle(planet);
+        mTitle = mMenuTitles[position];
         // Cerramos el menu
         mDrawerLayout.closeDrawer(mDrawerListView);
     }
