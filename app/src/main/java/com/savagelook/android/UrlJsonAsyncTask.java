@@ -20,6 +20,7 @@ public abstract class UrlJsonAsyncTask extends AsyncTask<String, Void, JSONObjec
     private static final String MESSAGE_LOADING = "Loading, please wait...";
     private static final String MESSAGE_BUSY = "Server is busy. Please try again.";
     private static final String MESSAGE_ERROR = "There was an error processing your request. Please try again.";
+    private static final String REQUEST_METHOD = "GET";
     private static final int TIMEOUT_CONNECT = 0;
     private static final int TIMEOUT_READ = 0;
     private static final int RETRY_COUNT = 0;
@@ -28,12 +29,14 @@ public abstract class UrlJsonAsyncTask extends AsyncTask<String, Void, JSONObjec
 
 
     private ProgressDialog progressDialog = null;
+    private boolean showDialog = true;
     protected Context context = null;
     protected String parameters = "";
     private String loadingTitle;
     private String messageLoading;
     private String messageBusy;
     private String messageError;
+    private String requestMethod;
     private int timeoutConnect;
     private int timeoutRead;
     private int retryCount;
@@ -51,6 +54,7 @@ public abstract class UrlJsonAsyncTask extends AsyncTask<String, Void, JSONObjec
         this.retryCount = RETRY_COUNT;
         this.jsonSuccess = JSON_SUCCESS;
         this.jsonInfo = JSON_INFO;
+        this.requestMethod = REQUEST_METHOD;
     }
 
     @Override
@@ -58,19 +62,21 @@ public abstract class UrlJsonAsyncTask extends AsyncTask<String, Void, JSONObjec
 
     @Override
     protected void onPreExecute() {
-        progressDialog = ProgressDialog.show(
-                this.context,
-                this.loadingTitle,
-                this.messageLoading,
-                true,
-                true,
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface arg0) {
-                        UrlJsonAsyncTask.this.cancel(true);
+        if (showDialog) {
+            progressDialog = ProgressDialog.show(
+                    this.context,
+                    this.loadingTitle,
+                    this.messageLoading,
+                    true,
+                    true,
+                    new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface arg0) {
+                            UrlJsonAsyncTask.this.cancel(true);
+                        }
                     }
-                }
-        );
+            );
+        }
     }
 
     @Override
@@ -157,6 +163,18 @@ public abstract class UrlJsonAsyncTask extends AsyncTask<String, Void, JSONObjec
 
     public void setJsonInfo(String jsonInfo) {
         this.jsonInfo = jsonInfo;
+    }
+
+    public void setRequestMethod(String requestMethod){
+        this.requestMethod = requestMethod;
+    }
+
+    public String getRequestMethod(){
+        return requestMethod;
+    }
+
+    public void showDialog(boolean showDialog) {
+        this.showDialog = showDialog;
     }
 
     public void addParameter(String name, String value) {

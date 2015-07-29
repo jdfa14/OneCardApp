@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/item_cards_card_ImageView"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/row_cards_image_content"
+        android:maxHeight="2dp"
+        android:maxWidth="2dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/viaticos2" />
+
+
+    <TextView
+        android:id="@+id/item_cards_balance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saldo: $1000.00"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/item_cards_product_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Viaticos y Gastos"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/item_cards_card_number_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="****-****-****-5236"
+        android:textColor="@android:color/secondary_text_light"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+</LinearLayout>

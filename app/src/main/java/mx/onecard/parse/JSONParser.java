@@ -35,18 +35,18 @@ public class JSONParser {
                 return null;
             }
             transactions = cardJson.getJSONObject("transactions");
-            if (!transactions.has("topTen")
-                    || !transactions.has("actualForthnight")
-                    || !transactions.has("lastForthnight")){
+            if (!transactions.has("type1")
+                    || !transactions.has("type2")
+                    || !transactions.has("type3")){
                 Log.e(TAG, "JSONObject transactions of JSONCard malformed");
                 return null;
             }
 
             card = new Card(cardJson.getString("card"), cardJson.getString("product"), cardJson.getDouble("balance"));
             card.updateTransactions(
-                    parseTransactionSet(transactions.getJSONArray("topTen")),
-                    parseTransactionSet(transactions.getJSONArray("actualForthnight")),
-                    parseTransactionSet(transactions.getJSONArray("lastForthnight"))
+                    parseTransactionSet(transactions.getJSONArray("type1")),
+                    parseTransactionSet(transactions.getJSONArray("type2")),
+                    parseTransactionSet(transactions.getJSONArray("type3"))
             );
 
         } catch (JSONException e) {

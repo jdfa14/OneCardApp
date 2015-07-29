@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.onecard.input.Validator;
+import mx.onecard.parse.User;
 import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
@@ -146,14 +147,15 @@ public class SocialLoginActivity extends AppCompatActivity implements
     protected void login(String email, String password) {
         //TODO Comunicación con el servidor. Se invoca metodo y se
         if (true) { // IF se valida el inicio de session
-            accessGranted();
+            accessGranted("David", "T0K3N");// TODO Crear usuario con su verdader nombre y token
         }
     }
 
-    protected void accessGranted() {
+    protected void accessGranted(String name, String token) {
+        User.setNewUser(name,token); // Instanciamos que el usuario exista
         Intent intent = new Intent(this, NavDrawActivity.class);
         startActivity(intent);
-        finish();
+        finish(); // Sale de queue
     }
 
     //TODO debe ser una intetrface activada desde el mSocialNetworkSessionHandler

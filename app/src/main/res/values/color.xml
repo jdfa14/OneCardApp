@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- colores para tema -->
-    <color name="primaryColor">#2196F3</color>
-    <color name="primaryColorDark">#0D47A1</color>
+    <color name="primaryColor">#1976D2</color>
+    <color name="primaryColorDark">#2196F3</color>
+    <color name="accentColor">#C51162</color>
 
     <color name="mainBG">#1b53a1</color>
+
+    <color name="menuActivated">#ff78d7c8</color>
+    <color name="menuPressed">#ff96fffa</color>
+
 </resources>

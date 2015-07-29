@@ -1,6 +1,8 @@
 package mx.onecard.onecardapp;
 
 import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -18,22 +20,29 @@ import java.util.ArrayList;
 import mx.onecard.lists.adapters.NavDrawerListAdapter;
 import mx.onecard.lists.item.NavMenu;
 import mx.onecard.onecardapp.R;
+import mx.onecard.views.CardBalanceFragment;
 
 public class NavDrawActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView mDrawerListView;
 
-
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mMenuTitles;
+
+    // Fragmentos
+    private Fragment[] mFragments;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
+
+        mFragments = new Fragment[]{
+                new CardBalanceFragment()
+        };
 
         mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.navigation_drawer_options);
@@ -137,13 +146,21 @@ public class NavDrawActivity extends AppCompatActivity {
     }
 
     private void selectItem(int position) {
+        //Transicion a fragmento
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.nav_frameLayout_container,mFragments[0]).commit();
 
-        // TODO falta poner la transicion del fragment
         // Feedback visual de seleccion
         mDrawerListView.setItemChecked(position, true);
         // Cambiamos el nombre de la activity
         mTitle = mMenuTitles[position];
         // Cerramos el menu
         mDrawerLayout.closeDrawer(mDrawerListView);
+    }
+
+    //TODO agregar un alert para verificar que quiera salir de la app
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

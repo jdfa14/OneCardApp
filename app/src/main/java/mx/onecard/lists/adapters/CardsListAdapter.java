@@ -19,16 +19,19 @@ import mx.onecard.onecardapp.R;
  */
 
 public class CardsListAdapter extends ArrayAdapter<Card> {
+
+    int resource;
+
     public CardsListAdapter(Context context, int resource, List<Card> objects) {
         super(context, resource, objects);
+        this.resource = resource;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater)parent.getContext().
-                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_nav_drawer, null); // TODO Crear layou para renglon
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            convertView = inflater.inflate(resource, null); // TODO Crear layou para renglon
         }
 
         ImageView cardImage = (ImageView) convertView.findViewById(R.id.item_cards_card_ImageView);

@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +27,18 @@ import java.util.Map;
  */
 public class ServerConnection extends UrlJsonAsyncTask {
     private static final String TAG = "ServerConnection";
+    public static final String GET = "GET";
+    public static final String POST = "POST";
     private OnServerResponseListener onServerResponseListener;
 
     /**
      * Constructor
+     *
      * @param context contexto para mostrar la barra de espera e imprimir mensaje de error
      */
-    public ServerConnection(Context context) {
+    public ServerConnection(Context context, OnServerResponseListener mListener) {
         super(context);
+        setOnServerResponseListener(mListener);
     }
 
     /**
@@ -42,29 +47,29 @@ public class ServerConnection extends UrlJsonAsyncTask {
      */
     @Override
     protected JSONObject doInBackground(String... urls) {
-        if (urls.length == 0)
+        if (urls.length != 1)
             return null;
+        return tryConnection(urls[0]);
+    }
 
+    private JSONObject tryConnection(String url) {
         JSONObject json = new JSONObject();
         JSONObject headers = new JSONObject();
-        HttpURLConnection mConnection;
+        HttpURLConnection mConnection = null;
         Map<String, List<String>> map;
-
+        int retries = getRetryCount();
         try {
             try {
-                mConnection = (HttpURLConnection) new URL(urls[0]).openConnection();
-                if (urls.length == 2) {
-                    mConnection.setRequestMethod(urls[1]);
-                } else {
-                    mConnection.setRequestMethod("GET");
-                }
+                mConnection = (HttpURLConnection) new URL(url).openConnection();
 
+                mConnection.setRequestMethod(getRequestMethod());
                 mConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 mConnection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
                 mConnection.setUseCaches(false);
                 mConnection.setDoInput(true);
                 mConnection.setDoOutput(true);
                 mConnection.setConnectTimeout(getTimeoutConnect());
+                mConnection.setReadTimeout(getTimeoutRead());
 
                 //send request
                 OutputStream os = mConnection.getOutputStream();
@@ -112,16 +117,30 @@ public class ServerConnection extends UrlJsonAsyncTask {
                         headers.put(entry.getKey(), entry.getValue());
                 }
 
-
                 json.put("response_message", mConnection.getResponseMessage());
                 json.put("headers", headers);
                 json.put("content_type", mConnection.getContentType());
 
                 mConnection.disconnect();
 
-            } catch (IOException e) {
-                json.put("response_code", 412);
-                json.put("body", e.getMessage());
+            } catch (SocketTimeoutException e) {// Error de timeout
+                if (retries > 0) {
+                    retries--;
+                    setRetryCount(retries);
+                    json = tryConnection(url);
+                } else {
+                    json.put("response_code", 408);
+                    json.put("body", e.getMessage());
+                }
+            } catch (IOException e) {// Error de escritura del buffer reader
+                if (retries > 0) {
+                    retries--;
+                    setRetryCount(retries);
+                    json = tryConnection(url);
+                } else {
+                    Log.e(TAG, e.getMessage());
+                    return null;
+                }
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
@@ -138,8 +157,10 @@ public class ServerConnection extends UrlJsonAsyncTask {
 
     /**
      * Este metodo DEBE ser implementado para poder tener respuesta del servidor
+     *
      * @param onServerResponseListener Clase que implementa la interfaz
      */
+
     public void setOnServerResponseListener(OnServerResponseListener onServerResponseListener) {
         this.onServerResponseListener = onServerResponseListener;
     }

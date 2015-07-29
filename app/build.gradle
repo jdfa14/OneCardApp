@@ -43,4 +43,5 @@ dependencies {
         transitive = true;
     }
     compile 'com.facebook.android:facebook-android-sdk:4.2.0'
+    compile 'joda-time:joda-time:2.8.1'
 }
