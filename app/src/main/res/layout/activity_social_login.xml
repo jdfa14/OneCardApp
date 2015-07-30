@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:ems="10"
+            android:hint="@string/login_email_textbox_hint"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:ems="10"
+            android:hint="@string/login_password_textbox_hint"
             android:inputType="textPassword" />
 
         <Space

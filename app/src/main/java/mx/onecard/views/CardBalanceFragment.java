@@ -1,5 +1,6 @@
 package mx.onecard.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 
 import mx.onecard.lists.adapters.CardsListAdapter;
 import mx.onecard.onecardapp.R;
+import mx.onecard.onecardapp.TransactionsActivity;
 import mx.onecard.parse.User;
 import mx.onecard.parse.User.OnUpdate;
 
@@ -29,8 +31,7 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     public static CardBalanceFragment newInstance() {
-        CardBalanceFragment fragment = new CardBalanceFragment();
-        return fragment;
+        return new CardBalanceFragment();
     }
 
     public CardBalanceFragment() {
@@ -56,8 +57,8 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
 
             mCardListView.setOnItemClickListener(new CardListItemClickListener());
             mCardListView.setOnScrollListener(this);
-            mCardListView2.setOnScrollListener(this);
-            mCardListView3.setOnScrollListener(this);
+
+            mCardListView.setAdapter(mAdapter);
 
             mSwipeRefreshLayout.setOnRefreshListener(this);
             mSwipeRefreshLayout.setColorSchemeResources(
@@ -66,27 +67,17 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
                     android.R.color.holo_orange_light,
                     android.R.color.holo_red_light);
 
-            mSwipeRefreshLayout.setRefreshing(true);
             User.getActualUser().Update(getActivity(), this);
 
         }
         return v;
     }
 
-    private void updateBalances() {
-        // Cleaning listview
-        // mCardListView.setAdapter(mAdapter);
-        mCardListView2.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_2, User.getActualUser().getCards()));
-        mCardListView3.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_3, User.getActualUser().getCards()));
-        mAdapter.notifyDataSetChanged();
-    }
-
     //IMPLEMENTATIONS
     // OnRefreshListener
     @Override
     public void onRefresh() {
-        User.getActualUser().Update(getActivity(),this);
-        mSwipeRefreshLayout.setRefreshing(false);
+        User.getActualUser().Update(getActivity(), this);
     }
 
     // OnScrollListener
@@ -97,19 +88,21 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        int topRowVerticalPosition = (view == null || totalItemCount == 0) ? 0 : view.getChildAt(0).getTop();
+        int topRowVerticalPosition = (view == null || view.getChildCount() == 0) ? 0 : view.getChildAt(0).getTop();
         mSwipeRefreshLayout.setEnabled((firstVisibleItem == 0 && topRowVerticalPosition >= 0));
     }
 
     //OnUpdate
     @Override
     public void onPreUpdate() {
-
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void onPostUpdate() {
-        updateBalances();
+        mCardListView2.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_2, User.getActualUser().getCards()));
+        mCardListView3.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_3, User.getActualUser().getCards()));
+        mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -117,7 +110,11 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
     private class CardListItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //TODO Pasar a la actividad de balances enviando la informacion necesaria
+            Intent intent = new Intent(getActivity(), TransactionsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("index",position);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 

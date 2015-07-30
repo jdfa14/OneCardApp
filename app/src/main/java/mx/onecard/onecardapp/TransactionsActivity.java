@@ -1,22 +1,57 @@
 package mx.onecard.onecardapp;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import mx.onecard.lists.adapters.TransactionListAdapter;
+import mx.onecard.lists.item.Card;
+import mx.onecard.parse.User;
 
 
-public class TransactionsActivity extends ActionBarActivity {
+public class TransactionsActivity extends AppCompatActivity implements User.OnUpdate{
+    private static final String TAG = "TransactionsActivity";
+
+    private User mUser = User.getActualUser();
+    private Card mCard;
+    private TransactionListAdapter mAdapter;
+    private ListView mTransactionsListView;
+    private ImageView mCardImageView;
+    private TextView mBalanceTextView;
+    private TextView mCardNumberTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_transactions);
-        addSpinnerListener();
+        Bundle extras = getIntent().getExtras();
+        if(extras == null || !extras.containsKey("index")) {
+            Log.e(TAG,"Activity started without extras. This activity needs a valid Card Index");
+            finish();
+        }
+
+        if(savedInstanceState == null){
+            assert extras != null;
+            mCard = mUser.getCards().get(extras.getInt("index"));
+            mAdapter = new TransactionListAdapter(this,R.layout.item_transaction,mCard.getType1());
+
+            mTransactionsListView = (ListView) findViewById(R.id.trans_transaction_listview);
+            mCardImageView = (ImageView) findViewById(R.id.trans_card_imageview);
+            mBalanceTextView = (TextView) findViewById(R.id.trans_balance_textView);
+            mCardNumberTextView = (TextView) findViewById(R.id.trans_card_number_label);
+
+            mTransactionsListView.setAdapter(mAdapter);
+            mCardImageView.setImageResource(mCard.getImageResourceId());
+            mBalanceTextView.setText(mCard.getBalance());
+            mCardNumberTextView.setText(mCard.getCardNumber());
+        }
     }
 
     @Override
@@ -41,16 +76,15 @@ public class TransactionsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void addSpinnerListener(){
-        ((Spinner)findViewById(R.id.trans_transaction_type_spinner)).setOnItemClickListener(new Spinner.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(
-                        parent.getContext(),
-                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_SHORT).show();
-                //TODO se debe hacer una nueva consulta a Card donde pedirá lo que se pide
-            }
-        });
+    @Override
+    public void onPreUpdate() {
+
     }
+
+    @Override
+    public void onPostUpdate() {
+
+    }
+
+
 }

@@ -15,7 +15,7 @@ import mx.onecard.onecardapp.R;
 
 /**
  * Created by OneCardAdmon on 10/07/2015.
- * Adapter para imprimir las tarjetas y sus datos
+ * Adapter para imprimir las tarjetas y sus datos por renglon desde item
  */
 
 public class CardsListAdapter extends ArrayAdapter<Card> {
@@ -31,7 +31,7 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(resource, null); // TODO Crear layou para renglon
+            convertView = inflater.inflate(resource, null);
         }
 
         ImageView cardImage = (ImageView) convertView.findViewById(R.id.item_cards_card_ImageView);
@@ -44,9 +44,7 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
         balance.setText(card.getBalance());
         product.setText(card.getProduct());
         cardNumber.setText(card.getCardNumber());
-        //TODO FALTA MANIPULAR ON CLICK
-        // En la seleccion del renglon se debe ir a la pantalla de saldo de dicha tarjeta donde se mostraran los movimientos
-        // dicha tarjeta
+
         return convertView;
     }
 }

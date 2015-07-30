@@ -8,10 +8,10 @@
     <color name="editTextColor">#295055</color>
     <color name="textColorPrimary">#295055</color>
     <color name="textColorSecondary">#295055</color>
-    <color name="textColorTertiary">#ffffffff</color>
-    <color name="textColorPrimaryInverse">#ffffffff</color>
-    <color name="textColorSecondaryInverse">#ffffffff</color>
-    <color name="textColorTertiaryInverse">#ffffffff</color>
+    <color name="textColorTertiary">#295055</color>
+    <color name="textColorPrimaryInverse">#295055</color>
+    <color name="textColorSecondaryInverse">#295055</color>
+    <color name="textColorTertiaryInverse">#295055</color>
 
 
     <color name="mainBG">#1b53a1</color>

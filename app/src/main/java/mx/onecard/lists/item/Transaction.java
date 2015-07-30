@@ -1,7 +1,5 @@
 package mx.onecard.lists.item;
 
-import java.util.Date;
-
 import mx.onecard.input.Formatter;
 
 /**
@@ -10,15 +8,15 @@ import mx.onecard.input.Formatter;
  */
 public class Transaction {
     private String note;                // Tipo de transaccion que se realizo, Abono, compra, cancelacion etc
-    private String merchant;            // El nombre del comercio en el que se uso
+    private String description;         // El nombre del comercio en el que se uso
     private String dateApplied;         // Cuando fue aplicada la transaccion
     private double transactionAmount;   // El monto de la transaccion
     private double avaliableAmount;     // El saldo restante
 
     //TODO tambien puede recibir un json con todos esos atributos
-    public Transaction(String note, String merchant, String dateApplied, double transactionAmount, double avaliableAmount) {
+    public Transaction(String note, String description, String dateApplied, double transactionAmount, double avaliableAmount) {
         this.note = note;
-        this.merchant = merchant;
+        this.description = description;
         this.transactionAmount = transactionAmount;
         this.dateApplied = dateApplied;
         this.avaliableAmount = avaliableAmount;
@@ -28,8 +26,8 @@ public class Transaction {
         return note;
     }
 
-    public String getMerchant() {
-        return merchant;
+    public String getDescription() {
+        return description;
     }
 
     public String getTransactionAmount() {
