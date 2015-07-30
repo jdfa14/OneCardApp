@@ -5,6 +5,13 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:editTextColor">@color/editTextColor</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
+        <item name="android:textColorTertiaryInverse">@color/textColorTertiaryInverse</item>
         <item name="android:shadowDx" >1.5</item>
         <item name="android:shadowDy" >1.5</item>
         <item name="android:shadowRadius" >1</item>

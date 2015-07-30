@@ -5,6 +5,15 @@
     <color name="primaryColorDark">#2196F3</color>
     <color name="accentColor">#C51162</color>
 
+    <color name="editTextColor">#295055</color>
+    <color name="textColorPrimary">#295055</color>
+    <color name="textColorSecondary">#295055</color>
+    <color name="textColorTertiary">#ffffffff</color>
+    <color name="textColorPrimaryInverse">#ffffffff</color>
+    <color name="textColorSecondaryInverse">#ffffffff</color>
+    <color name="textColorTertiaryInverse">#ffffffff</color>
+
+
     <color name="mainBG">#1b53a1</color>
 
     <color name="menuActivated">#ff78d7c8</color>
