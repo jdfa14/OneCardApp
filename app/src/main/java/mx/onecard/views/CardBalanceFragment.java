@@ -23,8 +23,8 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
     private CardsListAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mCardListView;
-    private ListView mCardListView2;
-    private ListView mCardListView3;
+    //private ListView mCardListView2;
+    //private ListView mCardListView3;
 
     public static CardBalanceFragment getInstance() {
         return instance;
@@ -49,15 +49,15 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.frag_balance_swipeRefreshLayout);
         mCardListView = (ListView) v.findViewById(R.id.frag_balance_cards_listview);
-        mCardListView2 = (ListView) v.findViewById(R.id.frag_balance_cards_listview2);
-        mCardListView3 = (ListView) v.findViewById(R.id.frag_balance_cards_listview3);
+        //mCardListView2 = (ListView) v.findViewById(R.id.frag_balance_cards_listview2);
+        //mCardListView3 = (ListView) v.findViewById(R.id.frag_balance_cards_listview3);
 
         if (savedInstanceState == null) {
+
             mAdapter = new CardsListAdapter(getActivity(), R.layout.item_card, User.getActualUser().getCards());
 
             mCardListView.setOnItemClickListener(new CardListItemClickListener());
             mCardListView.setOnScrollListener(this);
-
             mCardListView.setAdapter(mAdapter);
 
             mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -100,8 +100,8 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onPostUpdate() {
-        mCardListView2.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_2, User.getActualUser().getCards()));
-        mCardListView3.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_3, User.getActualUser().getCards()));
+        //mCardListView2.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_2, User.getActualUser().getCards()));
+        //mCardListView3.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_3, User.getActualUser().getCards()));
         mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -112,7 +112,7 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(getActivity(), TransactionsActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putInt("index",position);
+            bundle.putInt("index", position);
             intent.putExtras(bundle);
             startActivity(intent);
         }

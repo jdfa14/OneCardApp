@@ -40,7 +40,7 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
         TextView cardNumber = (TextView) convertView.findViewById(R.id.item_cards_card_number_label);
 
         Card card = getItem(position);
-        cardImage.setImageResource(card.getImageResourceId());
+        //cardImage.setImageResource(card.getImageResourceId());
         balance.setText(card.getBalance());
         product.setText(card.getProduct());
         cardNumber.setText(card.getCardNumber());

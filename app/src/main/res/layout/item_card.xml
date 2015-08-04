@@ -1,57 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:weightSum="100">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/item_cards_card_ImageView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="50"
-        android:orientation="vertical">
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_weight="30"
+        android:contentDescription="@string/row_cards_image_content"
+        android:src="@drawable/viaticos2" />
 
-        <ImageView
-            android:id="@+id/item_cards_card_ImageView"
-            android:layout_width="140dp"
-            android:layout_height="90dp"
-            android:contentDescription="@string/row_cards_image_content"
-            android:maxHeight="2dp"
-            android:maxWidth="2dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/viaticos2" />
-
-        <TextView
-            android:id="@+id/item_cards_card_number_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="****-****-****-5236"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textColor="@android:color/secondary_text_light"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="50"
+        android:layout_height="match_parent"
+        android:layout_weight="45"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/item_cards_balance_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Saldo: $1000.00"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/item_cards_product_label"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Viaticos y gastos"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textStyle="italic" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Mercado Pago de Despensa Suprema"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/item_cards_card_number_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/item_cards_product_label"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="****-****-****-5236"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_cards_balance_label"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="25"
+        android:gravity="center"
+        android:text="$3,500.00"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

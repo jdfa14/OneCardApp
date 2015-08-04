@@ -2,6 +2,7 @@ package mx.onecard.onecardapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ public class TransactionsActivity extends AppCompatActivity implements User.OnUp
     private ImageView mCardImageView;
     private TextView mBalanceTextView;
     private TextView mCardNumberTextView;
+    private Toolbar mToolbar;
 
 
     @Override
@@ -46,6 +48,13 @@ public class TransactionsActivity extends AppCompatActivity implements User.OnUp
             mCardImageView = (ImageView) findViewById(R.id.trans_card_imageview);
             mBalanceTextView = (TextView) findViewById(R.id.trans_balance_textView);
             mCardNumberTextView = (TextView) findViewById(R.id.trans_card_number_label);
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+            if(mToolbar != null) {
+                setSupportActionBar(mToolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true); // Para mostrar logo
+            }
 
             mTransactionsListView.setAdapter(mAdapter);
             mCardImageView.setImageResource(mCard.getImageResourceId());

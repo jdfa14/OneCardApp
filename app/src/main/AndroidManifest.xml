@@ -40,15 +40,18 @@
             android:label="@string/app_name" />
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/app_name"/>
-        <activity
-            android:name=".TransactionsActivity"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name"
+            android:parentActivityName="mx.onecard.onecardapp.SocialLoginActivity" />
         <activity
             android:name=".NavDrawActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:screenOrientation="portrait"
-            android:label="@string/title_navigation_drawer"/>
+            android:label="@string/title_navigation_drawer"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".TransactionsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="mx.onecard.onecardapp.NavDrawActivity" />
     </application>
 
 </manifest>

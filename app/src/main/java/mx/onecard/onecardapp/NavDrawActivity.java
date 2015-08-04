@@ -22,7 +22,7 @@ import mx.onecard.lists.item.NavMenu;
 import mx.onecard.onecardapp.R;
 import mx.onecard.views.CardBalanceFragment;
 
-public class NavDrawActivity extends AppCompatActivity {
+public class NavDrawActivity extends AppCompatActivity implements ListView.OnItemClickListener {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView mDrawerListView;
@@ -34,63 +34,58 @@ public class NavDrawActivity extends AppCompatActivity {
     // Fragmentos
     private Fragment[] mFragments;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_nav_drawer);
 
-        mFragments = new Fragment[]{
-                new CardBalanceFragment()
-        };
-
-        mDrawerTitle = getTitle();
-        mMenuTitles = getResources().getStringArray(R.array.navigation_drawer_options);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.nav_drawerLayout);
-        mDrawerListView = (ListView) findViewById(R.id.nav_listView);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        ArrayList<NavMenu> items = new ArrayList<NavMenu>();
-        items.add(new NavMenu(mMenuTitles[0], R.drawable.home_icon));
-        items.add(new NavMenu(mMenuTitles[1], R.drawable.credit_card_icon));
-        items.add(new NavMenu(mMenuTitles[2], R.drawable.settings_icon));
-
-        mDrawerListView.setAdapter(new NavDrawerListAdapter(this, R.layout.item_nav_drawer, items));
-        mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
-        // mDrawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.draw_list_item, getResources().getStringArray(R.array.transaction_type)));
-
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-        }
-
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
-                //super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu(); // forza a invocar onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                //super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-
         if (savedInstanceState == null) {
+            mFragments = new Fragment[]{
+                    CardBalanceFragment.getInstance()
+            };
+
+            mDrawerTitle = getTitle();
+            mMenuTitles = getResources().getStringArray(R.array.navigation_drawer_options);
+
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.nav_drawerLayout);
+            mDrawerListView = (ListView) findViewById(R.id.nav_listView);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+            // set a custom shadow that overlays the main content when the drawer opens
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+            ArrayList<NavMenu> items = new ArrayList<NavMenu>();
+            items.add(new NavMenu(mMenuTitles[0], R.drawable.home_icon));
+            items.add(new NavMenu(mMenuTitles[1], R.drawable.credit_card_icon));
+            items.add(new NavMenu(mMenuTitles[2], R.drawable.settings_icon));
+
+            mDrawerListView.setAdapter(new NavDrawerListAdapter(this, R.layout.item_nav_drawer, items));
+            mDrawerListView.setOnItemClickListener(this);
+
+            if (toolbar != null) {
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+            }
+
+
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    getSupportActionBar().setTitle(mDrawerTitle);
+                    invalidateOptionsMenu(); // forza a invocar onPrepareOptionsMenu()
+                }
+
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    getSupportActionBar().setTitle(mTitle);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            };
+
+            mDrawerLayout.setDrawerListener(mDrawerToggle);
             mTitle = mMenuTitles[0];
-            selectItem(0);
+            //selectItem(0);
         }
     }
 
@@ -106,8 +101,8 @@ public class NavDrawActivity extends AppCompatActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (id){
-            case R.id.action_websearch :
+        switch (id) {
+            case R.id.action_websearch:
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -137,18 +132,16 @@ public class NavDrawActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
+    // ListView.OnItemClickListener
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        selectItem(position);
     }
 
     private void selectItem(int position) {
         //Transicion a fragmento
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.nav_frameLayout_container,mFragments[0]).commit();
+        fragmentManager.beginTransaction().replace(R.id.nav_frameLayout_container, mFragments[0]).commit();
 
         // Feedback visual de seleccion
         mDrawerListView.setItemChecked(position, true);
