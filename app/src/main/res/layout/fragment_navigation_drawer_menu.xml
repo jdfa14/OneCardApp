@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mx.onecard.onecardapp.NavigationDrawerMenuFragment"
-    android:layout_marginEnd="16dp"
-    android:layout_marginRight="16dp">
+    android:layout_marginEnd="@dimen/nav_draw_subtitle"
+    android:layout_marginRight="@dimen/nav_draw_subtitle"
+    android:background="@android:color/black"
+    tools:context="mx.onecard.onecardapp.NavigationDrawerMenuFragment">
 
     <ImageView
         android:id="@+id/nav_fragment_logo_imageview"
@@ -18,9 +19,10 @@
         android:layout_alignParentTop="true"
         android:background="@android:color/white"
         android:contentDescription="@string/logo_content"
-        android:padding="10dp"
+        android:paddingLeft="@dimen/nav_draw_small_margin"
+        android:paddingRight="@dimen/nav_draw_small_margin"
         android:src="@drawable/logo_one_card"
-        app:layout_heightPercent="20%" />
+        app:layout_heightPercent="25%" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/nav_frag_recyclerview"
@@ -31,6 +33,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/nav_fragment_logo_imageview" />
+        android:layout_below="@id/nav_fragment_logo_imageview"
+        android:paddingTop="16dp" />
 
 </android.support.percent.PercentRelativeLayout>

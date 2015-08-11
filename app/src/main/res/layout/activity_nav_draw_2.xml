@@ -1,32 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="mx.onecard.onecardapp.NavDrawActivity2">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar" />
-
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/nav_drawerLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="mx.onecard.onecardapp.NavDrawActivity2">
+
+        <include layout="@layout/toolbar" />
 
         <FrameLayout
             android:id="@+id/nav_frameLayout_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+    </LinearLayout>
 
-        <fragment
-            android:id="@+id/fragment_navigation_drawer_menu"
-            android:name="mx.onecard.onecardapp.NavigationDrawerMenuFragment"
-            android:layout_width="@dimen/nav_drawer_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:layout="@layout/fragment_navigation_drawer_menu"
-            tools:layout="@layout/fragment_navigation_drawer_menu" />
+    <fragment
+        android:id="@+id/fragment_navigation_drawer_menu"
+        android:name="mx.onecard.onecardapp.NavigationDrawerMenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:layout="@layout/fragment_navigation_drawer_menu"
+        tools:layout="@layout/fragment_navigation_drawer_menu" />
 
-    </android.support.v4.widget.DrawerLayout>
+</android.support.v4.widget.DrawerLayout>
 
-</LinearLayout>
