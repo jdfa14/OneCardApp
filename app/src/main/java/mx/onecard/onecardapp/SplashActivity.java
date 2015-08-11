@@ -12,7 +12,7 @@ import io.fabric.sdk.android.Fabric;
 import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
-public class SlpashActivity extends Activity {
+public class SplashActivity extends Activity {
 
     private boolean dataLoaded = false;
     private boolean dataLoading = false;
@@ -26,9 +26,9 @@ public class SlpashActivity extends Activity {
 
     private class LoadDataTask extends AsyncTask <Void,Integer,Void>
     {
-        public SlpashActivity mSplashActivity;
+        public SplashActivity mSplashActivity;
 
-        public LoadDataTask(SlpashActivity mSplashActivity){
+        public LoadDataTask(SplashActivity mSplashActivity){
             this.mSplashActivity = mSplashActivity;
         }
 
@@ -47,7 +47,7 @@ public class SlpashActivity extends Activity {
 
                     //Inicializando Facebook SDK
                     FacebookSdk.sdkInitialize(getApplicationContext());
-                    SocialNetworkSessionHandler.initialize(getApplicationContext(),SlpashActivity.this);
+                    SocialNetworkSessionHandler.initialize(getApplicationContext(),SplashActivity.this);
                     //Aqui es un codigo temporal, que solo simula cargar datos
                     this.wait(1000);
                 }

@@ -1,5 +1,5 @@
 <resources>
-    <style name="myAppTheme" parent="Theme.AppCompat">
+    <style name="myAppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="android:windowNoTitle">true</item>

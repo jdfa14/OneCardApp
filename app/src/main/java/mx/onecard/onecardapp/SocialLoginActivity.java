@@ -1,5 +1,6 @@
 package mx.onecard.onecardapp;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -153,7 +154,7 @@ public class SocialLoginActivity extends AppCompatActivity implements
 
     protected void accessGranted(String name, String token) {
         User.setNewUser(name,token); // Instanciamos que el usuario exista
-        Intent intent = new Intent(this, NavDrawActivity.class);
+        Intent intent = new Intent(this, NavDrawActivity2.class);
         startActivity(intent);
         finish(); // Sale de queue
     }
@@ -197,9 +198,11 @@ public class SocialLoginActivity extends AppCompatActivity implements
                 }
                 break;
             case R.id.login_auth_register_button:
+
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivityForResult(intent, REQUEST_LOGIN);
                 break;
         }
     }
+
 }

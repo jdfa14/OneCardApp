@@ -19,4 +19,8 @@
     <color name="menuActivated">#ff78d7c8</color>
     <color name="menuPressed">#ff96fffa</color>
 
+    <!-- Colores de las listas -->
+    <color name="list_pressed">#68c67f</color>
+
+
 </resources>

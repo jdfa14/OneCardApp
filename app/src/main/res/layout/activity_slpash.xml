@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:theme="@style/myAppTheme"
-    tools:context="mx.onecard.onecardapp.SlpashActivity">
+    tools:context="mx.onecard.onecardapp.SplashActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

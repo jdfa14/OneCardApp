@@ -22,7 +22,7 @@
             android:value="d98110f7d2f6bedc3808ffd638c18c1e98ec153e" />
 
         <activity
-            android:name=".SlpashActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,9 +41,15 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name"
-            android:parentActivityName="mx.onecard.onecardapp.SocialLoginActivity" />
+            android:parentActivityName=".SocialLoginActivity" />
         <activity
             android:name=".NavDrawActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/title_navigation_drawer"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".NavDrawActivity2"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/title_navigation_drawer"
             android:screenOrientation="portrait" />
