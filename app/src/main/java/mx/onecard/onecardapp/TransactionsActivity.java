@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import mx.onecard.lists.adapters.TransactionListAdapter;
-import mx.onecard.lists.item.Card;
+import mx.onecard.lists.items.Card;
 import mx.onecard.parse.User;
 
 

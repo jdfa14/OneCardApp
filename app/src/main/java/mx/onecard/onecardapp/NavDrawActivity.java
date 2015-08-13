@@ -18,8 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import mx.onecard.lists.adapters.NavDrawerListAdapter;
-import mx.onecard.lists.item.NavMenu;
-import mx.onecard.onecardapp.R;
+import mx.onecard.lists.items.NavMenu;
 import mx.onecard.views.CardBalanceFragment;
 
 public class NavDrawActivity extends AppCompatActivity implements ListView.OnItemClickListener {

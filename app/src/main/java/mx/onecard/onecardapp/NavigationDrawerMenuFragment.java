@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,15 +22,16 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.onecard.interfaces.ListInterfaces;
 import mx.onecard.lists.adapters.NavDrawerAdapter2;
-import mx.onecard.lists.item.NavMenu;
+import mx.onecard.lists.items.NavMenu;
 import mx.onecard.views.CardBalanceFragment;
 
 /**
  * Created by OneCardAdmon on 05/08/2015.
  * Fragmento que sostendra el menu para le NavigationDrawer
  */
-public class NavigationDrawerMenuFragment extends Fragment implements NavDrawerAdapter2.OnClickListener{
+public class NavigationDrawerMenuFragment extends Fragment implements ListInterfaces.OnClickListener{
 
     private RecyclerView mRecyclerView;
 
@@ -117,6 +120,14 @@ public class NavigationDrawerMenuFragment extends Fragment implements NavDrawerA
         });
     }
 
+    public void closeDrawer(){
+        mDrawerLayout.closeDrawers();
+    }
+
+    public boolean isDrawerOpen(){
+        return mDrawerLayout.isDrawerOpen(GravityCompat.START);
+    }
+
     public void saveToPreferences(Context context, String preferenceName, String preferenceValue){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -146,7 +157,16 @@ public class NavigationDrawerMenuFragment extends Fragment implements NavDrawerA
 
     private void selectMenuItem(int position) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.nav_frameLayout_container, CardBalanceFragment.getInstance()).commit();
-        mDrawerLayout.closeDrawers();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        switch (position){
+            case 0:
+                transaction.replace(R.id.nav_frameLayout_container, NotificationFragment.getInstance());
+                break;
+            case 1:
+                transaction.replace(R.id.nav_frameLayout_container, CardBalanceFragment.getInstance());
+                break;
+        }
+        transaction.commit();
+        closeDrawer();
     }
 }

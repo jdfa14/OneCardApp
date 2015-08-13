@@ -6,6 +6,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import mx.onecard.parse.User;
+
 /**
  * Created by OneCardAdmon on 05/08/2015.
  * Crea
@@ -15,7 +17,7 @@ public class NavDrawActivity2 extends NavDrawActivity {
     private boolean exiting = false;
 
     private Toolbar mToolbar;
-    private String[] mMenuTitles;
+    private User mUser;
     private NavigationDrawerMenuFragment mDrawerMenuFragment;
 
     public NavDrawActivity2() {
@@ -33,6 +35,8 @@ public class NavDrawActivity2 extends NavDrawActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             mDrawerMenuFragment = (NavigationDrawerMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_menu);
             mDrawerMenuFragment.setUp((DrawerLayout) findViewById(R.id.nav_drawerLayout), mToolbar, R.id.fragment_navigation_drawer_menu);
+            mUser = User.getActualUser();
+            mUser.Update(this,null); // Updating User
         }
     }
 
@@ -45,7 +49,9 @@ public class NavDrawActivity2 extends NavDrawActivity {
 
     @Override
     public void onBackPressed() {
-        if (exiting) {
+        if(mDrawerMenuFragment.isDrawerOpen()){
+            mDrawerMenuFragment.closeDrawer();
+        }else if (exiting) {
             super.onBackPressed();
         } else {
             Toast.makeText(this, R.string.app_exit_confirmation_message, Toast.LENGTH_LONG).show();

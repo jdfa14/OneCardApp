@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="mx.onecard.onecardapp.NotificationFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp">
+
+
+        <TextView
+            android:id="@+id/frag_notifications_header_textview"
+            style="@style/sectionHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_notifications_black_24dp"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/frag_notifications_header" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/frag_notifications_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/frag_notifications_header_textview"
+            android:gravity="center_horizontal" />
+
+    </RelativeLayout>
+
+</LinearLayout>

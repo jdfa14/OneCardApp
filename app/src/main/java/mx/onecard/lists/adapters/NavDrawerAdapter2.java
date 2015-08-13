@@ -12,7 +12,8 @@ import android.widget.Toast;
 import java.util.Collections;
 import java.util.List;
 
-import mx.onecard.lists.item.NavMenu;
+import mx.onecard.interfaces.ListInterfaces;
+import mx.onecard.lists.items.NavMenu;
 import mx.onecard.onecardapp.R;
 
 public class NavDrawerAdapter2 extends SingleSelectableAdapter<NavDrawerAdapter2.NavDrawerViewHolder> {
@@ -20,9 +21,9 @@ public class NavDrawerAdapter2 extends SingleSelectableAdapter<NavDrawerAdapter2
     private LayoutInflater inflater;
     private List<NavMenu> data = Collections.emptyList();
     private Context context;
-    private NavDrawerAdapter2.OnClickListener mOnClickListener;
+    private ListInterfaces.OnClickListener mOnClickListener;
 
-    public NavDrawerAdapter2(Context context, List<NavMenu> data, NavDrawerAdapter2.OnClickListener onClickListener) {
+    public NavDrawerAdapter2(Context context, List<NavMenu> data, ListInterfaces.OnClickListener onClickListener) {
         super();
         this.data = data;
         mOnClickListener = onClickListener;
@@ -62,7 +63,7 @@ public class NavDrawerAdapter2 extends SingleSelectableAdapter<NavDrawerAdapter2
             overlay = itemView.findViewById(R.id.selected_overlay);
 
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+            //itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -85,7 +86,4 @@ public class NavDrawerAdapter2 extends SingleSelectableAdapter<NavDrawerAdapter2
         }
     }
 
-    public interface OnClickListener {
-        void onItemClick(View v, int position);
-    }
 }

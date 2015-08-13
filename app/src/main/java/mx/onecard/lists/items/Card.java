@@ -1,4 +1,4 @@
-package mx.onecard.lists.item;
+package mx.onecard.lists.items;
 
 import java.util.ArrayList;
 

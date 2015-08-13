@@ -1,16 +1,26 @@
 package mx.onecard.parse;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
-import mx.onecard.lists.item.Card;
+import mx.onecard.lists.items.Card;
+import mx.onecard.lists.items.NotificationItem;
 import mx.onecard.services.ServerConnection;
 
 /**
@@ -19,12 +29,13 @@ import mx.onecard.services.ServerConnection;
  */
 
 //TODO incompleto
-public class User implements ServerConnection.OnServerResponseListener {
+public class User {
     private String name;
     private String token;
     private ArrayList<Card> cards;
-    private OnUpdate mListener;
+    private ArrayList<NotificationItem> notificationItems;
     private DateTime lastRequestTime;
+    private ProgressDialog progressDialog = null;
 
     private static User instance = null;
 
@@ -40,36 +51,75 @@ public class User implements ServerConnection.OnServerResponseListener {
     private User(String name, String token) {
         this.name = name;
         this.token = token;
-        cards = new ArrayList<Card>();
+        cards = new ArrayList<>();
+        notificationItems = new ArrayList<>();
         lastRequestTime = new DateTime().minusDays(1);
-        Update();
     }
 
     public ArrayList<Card> getCards() {
         return cards;
     }
 
-    public void Update(Context context, OnUpdate mListener) {
-        this.mListener = mListener;
+    public void Update(final Context context, final OnUpdate mListener) {
 
-        if (!Update()) {
-            mListener.onPostUpdate();
-            this.mListener = null;
-        } else {
-            // TODO hacer algo aqui si se pudo actualizar (barra de progreso)
-            mListener.onPostUpdate();
-            this.mListener = null;
-        }
+        AsyncTask<Void, Void, JSONObject> task = new AsyncTask<Void, Void, JSONObject>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                if (mListener != null) {
+                    mListener.onPreUpdate();
+                }
+                if (progressDialog != null) {
+                    progressDialog = ProgressDialog.show(
+                            context,
+                            "Loading",
+                            "Gattering information",
+                            true,
+                            true,
+                            new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface arg0) {
+                                }
+                            }
+                    );
+                }
+            }
+
+            @Override
+            protected JSONObject doInBackground(Void... params) {
+                try {
+                    synchronized (this)                     // Obtrenemos el token del thread actual
+                    {
+                        UpdateCards();
+                        UpdateNotifications();
+                        this.wait(3000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(JSONObject jsonObject) {
+                super.onPostExecute(jsonObject);
+                if (mListener != null) {
+                    mListener.onPostUpdate();
+                }
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                progressDialog = null;
+            }
+        }.execute();
+
     }
 
-    private synchronized boolean Update() {
+    private synchronized boolean UpdateCards() {
         DateTime requestTime = new DateTime();
         Interval interval;
         interval = new Interval(lastRequestTime, requestTime);
 
-        if(mListener != null){
-            mListener.onPreUpdate();
-        }
         if (interval.toDuration().getStandardMinutes() < 1)
             return false;
         lastRequestTime = requestTime;
@@ -116,27 +166,30 @@ public class User implements ServerConnection.OnServerResponseListener {
                     "      }\n" +
                     "    }")));
 
-            wait(3000);                     // TODO prueba
-        } catch (InterruptedException e) {  // TODO prueba
-            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return true;
     }
 
+    private synchronized void UpdateNotifications(){
+        ArrayList<NotificationItem> newArray = null;
+        try {
+            newArray = JSONParser.parseNotificationSet(new JSONArray("[{\"id\":1,\"title\":\"Dummy Message Title\",\"description\":\"This is a simple message\",\"type\":0},{\"id\":2,\"title\":\"Dummy Warning Title\",\"description\":\"This is a warning message\",\"type\":1},{\"id\":3,\"title\":\"Dummy News Title\",\"description\":\"This is a news message for new features\",\"type\":2},{\"id\":4,\"title\":\"Dummy Default Title\",\"description\":\"This is a message withot type specified\"},{\"id\":5,\"title\":\"Dummy Message Title\",\"description\":\"This is a simple message\",\"type\":0},{\"id\":6,\"title\":\"Dummy Warning Title\",\"description\":\"Onecard acaba de ser invadida por extraterrestres con planes malignos. Se recomienda discresion\",\"type\":1},{\"id\":7,\"title\":\"Dummy News Title\",\"description\":\"OneCard le informa que el dia de mañana todas las tarjetas seran remplazadas por nuevas tarjetas porque yolo, y se les cobrara remplazo a todos.\",\"type\":2},{\"id\":8,\"title\":\"Dummy Default Title\",\"description\":\"Ahora nos pondremos a cantar. Carmen se me perdió cadenita Con el cristo del nazareno Que tú me regalaste Carmen Que tú me regalaste Carmen Carmen por eso no voy a olvidarte Si ahora te llevo dentro Carmen Muy dentro de mi pecho A ti y al nazareno A ti y al nazareno\"}]"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(newArray != null)
+            notificationItems = newArray;
+    }
+
+    public ArrayList<NotificationItem> getNotificationItems() {
+        return notificationItems;
+    }
+
     public interface OnUpdate {
         void onPreUpdate();
-
         void onPostUpdate();
     }
 
-    @Override
-    public void onServerResponse(JSONObject serverResponse) {
-        //Todo. aqui debe cargar las transacciones y un parser del sistema
-        if (mListener != null) {
-            mListener.onPostUpdate();
-            mListener = null;
-        }
-    }
 }

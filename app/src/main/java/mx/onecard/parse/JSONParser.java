@@ -8,8 +8,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import mx.onecard.lists.item.Card;
-import mx.onecard.lists.item.Transaction;
+import mx.onecard.lists.items.Card;
+import mx.onecard.lists.items.NotificationItem;
+import mx.onecard.lists.items.Transaction;
 
 /**
  * Created by OneCardAdmon on 17/07/2015.
@@ -17,7 +18,7 @@ import mx.onecard.lists.item.Transaction;
  */
 
 public class JSONParser {
-    private static final String TAG = "JSONParser";
+    private static final String TAG = JSONParser.class.getSimpleName();
 
     /**
      * @param cardJson Json con los elementos para crear una tarjeta entera, transacciones, numeros etc.
@@ -106,5 +107,50 @@ public class JSONParser {
             Log.e(TAG, "Error con creating a new transaction: " + e.getMessage());
         }
         return transaction;
+    }
+
+    public static ArrayList<NotificationItem> parseNotificationSet(JSONArray notificationSetArray){
+        ArrayList<NotificationItem> transactionSet = new ArrayList<NotificationItem>();
+        try {
+            for (int i = 0; i < notificationSetArray.length(); i++) {
+                NotificationItem aux = parseNotification(notificationSetArray.getJSONObject(i));
+                if (aux != null) {// La transaccion debe estar bien construida
+                    transactionSet.add(aux);
+                } else {
+                    Log.e(TAG, "A transaction has been ignored: " + i);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "Error en obtener objeto de transaccion");
+        }
+        return transactionSet;
+    }
+
+    public static NotificationItem parseNotification(JSONObject notificationJSON){
+        final String fieldTitle = "title";
+        final String fieldDescription = "description";
+        final String fieldType = "type";
+        final String fieldId = "id";
+
+        NotificationItem notificationItem = null;
+        if(!notificationJSON.has(fieldTitle)
+                || !notificationJSON.has(fieldDescription)
+                || !notificationJSON.has(fieldId)){
+            Log.e(TAG,"JSONNotification malformed");
+            return null;
+        }
+        try {
+            int type = (notificationJSON.has(fieldType)) ? notificationJSON.getInt(fieldType) : 0;
+
+            notificationItem = new NotificationItem(type,
+                    notificationJSON.getInt(fieldId),
+                    notificationJSON.getString(fieldTitle),
+                    notificationJSON.getString(fieldDescription)
+            );
+        } catch (JSONException e) {
+            Log.e(TAG,e.getMessage());
+        }
+        return notificationItem;
     }
 }

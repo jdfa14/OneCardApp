@@ -22,5 +22,9 @@
     <!-- Colores de las listas -->
     <color name="list_pressed">#68c67f</color>
 
+    <color name="list_message">#00dd90</color>
+    <color name="list_warning">#ff371e</color>
+    <color name="list_news">#00ccdd</color>
+
 
 </resources>
