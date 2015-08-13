@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="mx.onecard.onecardapp.NotificationFragment">
+    tools:context="mx.onecard.views.NotificationFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

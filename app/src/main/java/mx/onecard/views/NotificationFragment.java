@@ -1,4 +1,4 @@
-package mx.onecard.onecardapp;
+package mx.onecard.views;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import mx.onecard.lists.adapters.NotificationsAdapter;
+import mx.onecard.onecardapp.R;
 import mx.onecard.parse.User;
 
 public class NotificationFragment extends Fragment {

@@ -26,6 +26,7 @@ import mx.onecard.interfaces.ListInterfaces;
 import mx.onecard.lists.adapters.NavDrawerAdapter2;
 import mx.onecard.lists.items.NavMenu;
 import mx.onecard.views.CardBalanceFragment;
+import mx.onecard.views.NotificationFragment;
 
 /**
  * Created by OneCardAdmon on 05/08/2015.
