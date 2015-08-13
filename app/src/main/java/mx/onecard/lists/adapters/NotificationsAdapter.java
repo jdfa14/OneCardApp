@@ -12,15 +12,17 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import mx.onecard.interfaces.ItemTouchHelperAdapter;
 import mx.onecard.interfaces.ListInterfaces;
 import mx.onecard.lists.items.NotificationItem;
 import mx.onecard.onecardapp.R;
+import mx.onecard.parse.User;
 
 /**
  * Created by OneCardAdmon on 12/08/2015.
  * Adaptador para el dataset de las notificaciones
  */
-public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
+public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private LayoutInflater inflater;
     private List<NotificationItem> dataset = Collections.emptyList();
@@ -65,6 +67,28 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public int getItemCount() {
         return dataset.size();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(dataset, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(dataset, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        // TODO Consumir servicio de eliminar notificacion
+        dataset.remove(position);
+        notifyItemRemoved(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
