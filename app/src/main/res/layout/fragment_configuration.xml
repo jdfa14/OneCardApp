@@ -1,0 +1,182 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="mx.onecard.views.ConfigurationFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                style="@style/card_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/text_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="15dp"
+                        android:text="Ajustes de cuenta" />
+
+                    <TextView
+                        style="@style/text_subheader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cambio de contraseña" />
+
+                    <EditText
+                        android:id="@+id/frag_config_actual_password_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contraseña actual"
+                        android:inputType="textPassword" />
+
+                    <EditText
+                        android:id="@+id/frag_config_password_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nueva Contraseña"
+                        android:inputType="textPassword" />
+
+                    <EditText
+                        android:id="@+id/frag_config_password_confirm_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Confirmacion de contraseña"
+                        android:inputType="textPassword" />
+
+                    <Button
+                        android:id="@+id/frag_config_change_password_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Cambiar" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                style="@style/card_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/text_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingBottom="15dp"
+                        android:text="Ajustes de tarjetas" />
+
+                    <TextView
+                        style="@style/text_subheader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Agregar / Eliminar Tarjetas" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Agregar Tarjeta" />
+
+                    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/frag_config_added_cards_tablelayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:shrinkColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:weightSum="1">
+
+                            <TextView
+                                style="@style/cell_header_left"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.65"
+                                android:text="Producto y tarjeta" />
+
+                            <TextView
+                                style="@style/cell_header_right"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.35"
+                                android:text="Acción" />
+
+                        </TableRow>
+
+                        <include layout="@layout/table_row_add" />
+
+                        <include layout="@layout/table_row_add" />
+
+                        <include layout="@layout/table_row_add" />
+
+                    </TableLayout>
+
+                    <TextView
+                        style="@style/text_subheader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cambiar estado de tarjeta" />
+
+                    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/frag_config_disable_cards_tablelayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:shrinkColumns="*">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:weightSum="1">
+
+                            <TextView
+                                style="@style/cell_header_left"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.65"
+                                android:text="Producto y tarjeta" />
+
+                            <TextView
+                                style="@style/cell_header_right"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.35"
+                                android:text="Acción" />
+
+                        </TableRow>
+
+                        <include layout="@layout/table_row_change"/>
+
+                    </TableLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

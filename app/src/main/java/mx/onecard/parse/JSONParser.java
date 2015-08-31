@@ -1,5 +1,6 @@
 package mx.onecard.parse;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -20,6 +21,23 @@ import mx.onecard.lists.items.Transaction;
 public class JSONParser {
     private static final String TAG = JSONParser.class.getSimpleName();
 
+    public static ArrayList<Card> parseCards(JSONArray cardSetArray){
+        ArrayList<Card> cardsSet = new ArrayList<Card>();
+            try{
+                for(int i = 0; i < cardSetArray.length(); i++){
+                    Card card = parseCard(cardSetArray.getJSONObject(i));
+                    if(card != null){
+                        cardsSet.add(card);
+                    }else{
+                        Log.e(TAG,"Card in wrong format");
+                    }
+                }
+            }catch (JSONException e){
+                Log.e(TAG,e.getMessage());
+            }
+
+        return cardsSet;
+    }
     /**
      * @param cardJson Json con los elementos para crear una tarjeta entera, transacciones, numeros etc.
      * @return regresa el objeto tarjeta en caso de tener todo bien construido
@@ -31,7 +49,8 @@ public class JSONParser {
             if (!cardJson.has("card")
                     || !cardJson.has("balance")
                     || !cardJson.has("product")
-                    || !cardJson.has("transactions")) { // Si no tiene todos los elementos necesarios
+                    || !cardJson.has("transactions")
+                    || !cardJson.has("state")) { // Si no tiene todos los elementos necesarios
                 Log.e(TAG, "JSONCard malformed");
                 return null;
             }
@@ -43,7 +62,10 @@ public class JSONParser {
                 return null;
             }
 
-            card = new Card(cardJson.getString("card"), cardJson.getString("product"), cardJson.getDouble("balance"));
+            card = new Card(cardJson.getInt("card"),
+                    cardJson.getInt("product"),
+                    cardJson.getDouble("balance"),
+                    cardJson.getInt("state"));
             card.updateTransactions(
                     parseTransactionSet(transactions.getJSONArray("type1")),
                     parseTransactionSet(transactions.getJSONArray("type2")),
@@ -63,7 +85,7 @@ public class JSONParser {
      * @return un ArrayList<Transaction> con los objetos de transaction que se encontraban en el set
      */
     public static ArrayList<Transaction> parseTransactionSet(JSONArray transactionSetArray) {
-        ArrayList<Transaction> transactionSet = new ArrayList<Transaction>();
+        ArrayList<Transaction> transactionSet = new ArrayList<>();
         try {
             for (int i = 0; i < transactionSetArray.length(); i++) {
                 Transaction aux = parseTransaction(transactionSetArray.getJSONObject(i));

@@ -12,23 +12,37 @@ import android.widget.Toast;
 import java.util.Collections;
 import java.util.List;
 
-import mx.onecard.interfaces.ListInterfaces;
+import mx.onecard.interfaces.list.OnClickListener;
 import mx.onecard.lists.items.NavMenu;
 import mx.onecard.onecardapp.R;
 
 public class NavDrawerAdapter2 extends SingleSelectableAdapter<NavDrawerAdapter2.NavDrawerViewHolder> {
 
     private LayoutInflater inflater;
-    private List<NavMenu> data = Collections.emptyList();
+    private List<NavMenu> dataset = Collections.emptyList();
     private Context context;
-    private ListInterfaces.OnClickListener mOnClickListener;
+    private OnClickListener mOnClickListener;
 
-    public NavDrawerAdapter2(Context context, List<NavMenu> data, ListInterfaces.OnClickListener onClickListener) {
-        super();
-        this.data = data;
+    public NavDrawerAdapter2(Context context, List<NavMenu> dataset, OnClickListener onClickListener) {
+        this.dataset = dataset;
         mOnClickListener = onClickListener;
         this.context = context;
         inflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        NavMenu.TYPE type = dataset.get(position).type;
+        switch (type){
+            case ACTION:
+                return 0;
+            case TRANSITION:
+                return 1;
+            case DELIMITER:
+                return 2;
+            default:
+                return -1;
+        }
     }
 
     @Override
@@ -38,17 +52,15 @@ public class NavDrawerAdapter2 extends SingleSelectableAdapter<NavDrawerAdapter2
 
     @Override
     public void onBindViewHolder(NavDrawerViewHolder holder, int position) {
-        final NavMenu item = data.get(position);
-        holder.name.setText(item.getName());
-        holder.icon.setImageResource(item.getIconId());
+        NavMenu item = dataset.get(position);
+        holder.name.setText(item.name);
+        holder.icon.setImageResource(item.iconId);
         holder.overlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
-        //holder.itemView.setSelected(selectedItem == position);
-        Toast.makeText(context, "New bindViewHolder call " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dataset.size();
     }
 
     public class NavDrawerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

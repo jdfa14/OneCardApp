@@ -22,17 +22,18 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import mx.onecard.interfaces.ListInterfaces;
+import mx.onecard.interfaces.list.OnClickListener;
 import mx.onecard.lists.adapters.NavDrawerAdapter2;
 import mx.onecard.lists.items.NavMenu;
 import mx.onecard.views.CardBalanceFragment;
+import mx.onecard.views.ConfigurationFragment;
 import mx.onecard.views.NotificationFragment;
 
 /**
  * Created by OneCardAdmon on 05/08/2015.
  * Fragmento que sostendra el menu para le NavigationDrawer
  */
-public class NavigationDrawerMenuFragment extends Fragment implements ListInterfaces.OnClickListener{
+public class NavigationDrawerMenuFragment extends Fragment implements OnClickListener {
 
     private RecyclerView mRecyclerView;
 
@@ -47,32 +48,37 @@ public class NavigationDrawerMenuFragment extends Fragment implements ListInterf
     private boolean mFlagFromSaved;
     private boolean mFlagLearned;
     private String[] mMenuTitles;
+    private Fragment[] mFragments = {
+            NotificationFragment.getInstance(),
+            CardBalanceFragment.getInstance(),
+            ConfigurationFragment.getInstance()
+    };
+    private int mSelectedFragment;
 
-    public NavigationDrawerMenuFragment(){
+    public NavigationDrawerMenuFragment() {
         // default empty constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFlagLearned = Boolean.valueOf(loadFromPreferences(getActivity(),KEY_LEARNING,"false"));
-        if(savedInstanceState != null){
+        mFlagLearned = Boolean.valueOf(loadFromPreferences(getActivity(), KEY_LEARNING, "false"));
+        if (savedInstanceState != null) {
             mFlagFromSaved = true;
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_navigation_drawer_menu,container,false);
-
+        View layout = inflater.inflate(R.layout.fragment_navigation_drawer_menu, container, false);
 
         mMenuTitles = getResources().getStringArray(R.array.navigation_drawer_options);
         List<NavMenu> items = new ArrayList<NavMenu>();
-        items.add(new NavMenu(mMenuTitles[0], R.drawable.ic_home_white_36dp));
-        items.add(new NavMenu(mMenuTitles[1], R.drawable.ic_credit_card_white_36dp));
-        items.add(new NavMenu(mMenuTitles[2], R.drawable.ic_settings_white_36dp));
+        items.add(new NavMenu(mMenuTitles[0], R.drawable.ic_home_white_36dp, NavMenu.TYPE.TRANSITION));
+        items.add(new NavMenu(mMenuTitles[1], R.drawable.ic_credit_card_white_36dp, NavMenu.TYPE.TRANSITION));
+        items.add(new NavMenu(mMenuTitles[2], R.drawable.ic_settings_white_36dp, NavMenu.TYPE.TRANSITION));
 
-        mDrawerAdapter = new NavDrawerAdapter2(getActivity(),items,this);
+        mDrawerAdapter = new NavDrawerAdapter2(getActivity(), items, this);
 
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.nav_frag_recyclerview);
         mRecyclerView.setAdapter(mDrawerAdapter);
@@ -85,13 +91,13 @@ public class NavigationDrawerMenuFragment extends Fragment implements ListInterf
     public void setUp(DrawerLayout mDrawerLayout, final Toolbar toolbar, int drawerViewId) {
         this.mDrawerLayout = mDrawerLayout;
         mDrawerView = getActivity().findViewById(drawerViewId);
-        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), this.mDrawerLayout,toolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close){
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), this.mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if(!mFlagLearned){
+                if (!mFlagLearned) {
                     mFlagLearned = true;
-                    saveToPreferences(getActivity(),KEY_LEARNING,mFlagLearned +"");
+                    saveToPreferences(getActivity(), KEY_LEARNING, mFlagLearned + "");
                 }
                 getActivity().invalidateOptionsMenu();
             }
@@ -105,11 +111,11 @@ public class NavigationDrawerMenuFragment extends Fragment implements ListInterf
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                toolbar.setAlpha((float) (1-slideOffset*0.4));
+                toolbar.setAlpha((float) (1 - slideOffset * 0.4));
             }
         };
 
-        if(!mFlagLearned && !mFlagFromSaved){
+        if (!mFlagLearned && !mFlagFromSaved) {
             mDrawerLayout.openDrawer(mDrawerView);
         }
         this.mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
@@ -119,26 +125,32 @@ public class NavigationDrawerMenuFragment extends Fragment implements ListInterf
                 mActionBarDrawerToggle.syncState();
             }
         });
+
+        selectMenuItem(0);
     }
 
-    public void closeDrawer(){
+    public void restore() {
+        mDrawerAdapter.selectItem(mSelectedFragment);
+    }
+
+    public void closeDrawer() {
         mDrawerLayout.closeDrawers();
     }
 
-    public boolean isDrawerOpen(){
+    public boolean isDrawerOpen() {
         return mDrawerLayout.isDrawerOpen(GravityCompat.START);
     }
 
-    public void saveToPreferences(Context context, String preferenceName, String preferenceValue){
+    public void saveToPreferences(Context context, String preferenceName, String preferenceValue) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(preferenceName, preferenceValue);
         editor.apply();
     }
 
-    public String loadFromPreferences(Context context, String preferenceName, String defaultValue){
+    public String loadFromPreferences(Context context, String preferenceName, String defaultValue) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(preferenceName,defaultValue);
+        return sharedPreferences.getString(preferenceName, defaultValue);
     }
 
     public void onPostCreate(Bundle savedInstanceState) {
@@ -157,17 +169,18 @@ public class NavigationDrawerMenuFragment extends Fragment implements ListInterf
     }
 
     private void selectMenuItem(int position) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        switch (position){
-            case 0:
-                transaction.replace(R.id.nav_frameLayout_container, NotificationFragment.getInstance());
-                break;
-            case 1:
-                transaction.replace(R.id.nav_frameLayout_container, CardBalanceFragment.getInstance());
-                break;
+        mSelectedFragment = position;
+
+        if (position == mDrawerAdapter.getItemCount() - 1) { // Ultimo boton (logout)
+
+        } else {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.nav_frameLayout_container, mFragments[position])
+                    .commit();
         }
-        transaction.commit();
+
         closeDrawer();
+        mDrawerAdapter.selectItem(position);
     }
 }

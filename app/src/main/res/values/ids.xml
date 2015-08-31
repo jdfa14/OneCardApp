@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="checkbox_state" type="id"/>
+    <item name="checkbox_position" type="id"/>
+    <item name="table_checkbox" type="id"/>
+</resources>

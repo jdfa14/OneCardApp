@@ -1,7 +1,10 @@
-package mx.onecard.onecardapp;
+package mx.onecard.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -10,23 +13,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import mx.onecard.lists.adapters.TransactionAdapter;
 import mx.onecard.lists.adapters.TransactionListAdapter;
 import mx.onecard.lists.items.Card;
+import mx.onecard.onecardapp.R;
 import mx.onecard.parse.User;
 
-
-public class TransactionsActivity extends AppCompatActivity implements User.OnUpdate{
-    private static final String TAG = "TransactionsActivity";
+//TODO pasar a RecyclerView para optimizacion
+public class TransactionsActivity extends AppCompatActivity {
+    private static final String TAG = TransactionsActivity.class.getSimpleName();
 
     private User mUser = User.getActualUser();
-    private Card mCard;
-    private TransactionListAdapter mAdapter;
-    private ListView mTransactionsListView;
-    private ImageView mCardImageView;
-    private TextView mBalanceTextView;
-    private TextView mCardNumberTextView;
-    private Toolbar mToolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +31,26 @@ public class TransactionsActivity extends AppCompatActivity implements User.OnUp
 
         setContentView(R.layout.activity_transactions);
         Bundle extras = getIntent().getExtras();
-        if(extras == null || !extras.containsKey("index")) {
-            Log.e(TAG,"Activity started without extras. This activity needs a valid Card Index");
-            finish();
-        }
+
 
         if(savedInstanceState == null){
-            assert extras != null;
-            mCard = mUser.getCards().get(extras.getInt("index"));
-            mAdapter = new TransactionListAdapter(this,R.layout.item_transaction,mCard.getType1());
 
-            mTransactionsListView = (ListView) findViewById(R.id.trans_transaction_listview);
-            mCardImageView = (ImageView) findViewById(R.id.trans_card_imageview);
-            mBalanceTextView = (TextView) findViewById(R.id.trans_balance_textView);
-            mCardNumberTextView = (TextView) findViewById(R.id.trans_card_number_label);
-            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            if(extras == null || !extras.containsKey("id")) {
+                Log.e(TAG,"Activity started without extras. This activity needs a valid Card Index");
+                finish();
+            }
+
+            assert extras != null;
+            Card mCard = mUser.mCardsMap.get(extras.getInt("id"));
+
+            TransactionListAdapter mAdapter = new TransactionListAdapter(this, R.layout.item_transaction, mCard.getType1());
+
+            //ListView mTransactionsListView = (ListView) findViewById(R.id.trans_transaction_listview);
+            ;
+            ImageView mCardImageView = (ImageView) findViewById(R.id.trans_card_imageview);
+            TextView mBalanceTextView = (TextView) findViewById(R.id.trans_balance_textView);
+            TextView mCardNumberTextView = (TextView) findViewById(R.id.trans_card_number_label);
+            Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
             if(mToolbar != null) {
                 setSupportActionBar(mToolbar);
@@ -56,7 +58,13 @@ public class TransactionsActivity extends AppCompatActivity implements User.OnUp
                 getSupportActionBar().setDisplayShowHomeEnabled(true); // Para mostrar logo
             }
 
-            mTransactionsListView.setAdapter(mAdapter);
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.trans_transaction_recyclerview);
+            recyclerView.setAdapter(new TransactionAdapter(mCard.getType1(),null));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            //mTransactionsListView.setAdapter(mAdapter);
+
             mCardImageView.setImageResource(mCard.getImageResourceId());
             mBalanceTextView.setText(mCard.getBalance());
             mCardNumberTextView.setText(mCard.getCardNumber());
@@ -72,9 +80,6 @@ public class TransactionsActivity extends AppCompatActivity implements User.OnUp
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -84,16 +89,4 @@ public class TransactionsActivity extends AppCompatActivity implements User.OnUp
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onPreUpdate() {
-
-    }
-
-    @Override
-    public void onPostUpdate() {
-
-    }
-
-
 }

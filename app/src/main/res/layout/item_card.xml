@@ -1,63 +1,72 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:padding="5dp"
-    android:weightSum="100">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="8dp">
 
-    <ImageView
-        android:id="@+id/item_cards_card_ImageView"
-        android:layout_width="0dp"
-        android:layout_height="?android:attr/listPreferredItemHeight"
-        android:layout_weight="30"
-        android:contentDescription="@string/row_cards_image_content"
-        android:src="@drawable/viaticos2" />
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="45"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/item_cards_product_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Mercado Pago de Despensa Suprema"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/item_cards_card_number_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/item_cards_product_label"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="****-****-****-5236"
-            android:textSize="14sp" />
-
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/item_cards_balance_label"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="25"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:text="$3,500.00"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:weightSum="1">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/item_cards_card_ImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:contentDescription="@string/row_cards_image_content"
+            android:src="@drawable/img_card_private" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".45"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_cards_product_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Mercado Pago de Despensa Suprema Maxima Super Chingona"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/item_cards_card_number_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/item_cards_product_label"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="****-****-****-5236"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/item_cards_balance_label"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".25"
+            android:gravity="center"
+            android:text="$3,500.00"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

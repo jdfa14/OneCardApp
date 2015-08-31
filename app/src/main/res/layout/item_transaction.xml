@@ -1,52 +1,61 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:weightSum="100"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:minHeight="?android:attr/listPreferredItemHeight">
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="8dp">
 
-    <android.support.percent.PercentRelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="80">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <android.support.percent.PercentRelativeLayout
+            android:layout_width="210dp"
+            android:id="@+id/item_trans_information"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/item_trans_date"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="09/07/2015"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:layout_heightPercent="50%" />
+
+            <TextView
+                android:id="@+id/item_trans_description"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:text="OXXO GAS"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:layout_heightPercent="50%" />
+
+        </android.support.percent.PercentRelativeLayout>
 
         <TextView
-            android:id="@+id/item_trans_date"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="09/07/2015"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_widthPercent="100%"
-            app:layout_heightPercent="50%"/>
-
-        <TextView
-            android:id="@+id/item_trans_description"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="OXXO GAS"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="bottom"
-            app:layout_widthPercent="100%"
-            app:layout_heightPercent="50%"/>
-
-    </android.support.percent.PercentRelativeLayout>
-
-    <TextView
-        android:id="@+id/item_trans_amount"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:text="$200"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:layout_weight="20"/>
+            android:id="@+id/item_trans_amount"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="$20000.00"
+            android:layout_toRightOf="@id/item_trans_information"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
 
 
-</LinearLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

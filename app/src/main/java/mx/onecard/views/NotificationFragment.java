@@ -16,6 +16,7 @@ import mx.onecard.onecardapp.R;
 import mx.onecard.parse.User;
 
 public class NotificationFragment extends Fragment {
+    public static final String TAG = NotificationFragment.class.getSimpleName();
     private static final NotificationFragment instance = new NotificationFragment();
 
     private NotificationsAdapter mRecAdapter;

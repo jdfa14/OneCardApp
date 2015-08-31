@@ -1,36 +1,20 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="mx.onecard.views.CardBalanceFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/frag_balance_swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="mx.onecard.views.CardBalanceFragment">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/frag_balance_cards_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <ListView
-                android:id="@+id/frag_balance_cards_listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ListView
-                android:id="@+id/frag_balance_cards_listview2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ListView
-                android:id="@+id/frag_balance_cards_listview3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

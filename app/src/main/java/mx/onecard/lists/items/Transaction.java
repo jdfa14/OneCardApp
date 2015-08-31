@@ -7,9 +7,9 @@ import mx.onecard.input.Formatter;
  * Clase que encapsula los datos de una transaccion y facilita su impresion de dineroses
  */
 public class Transaction {
-    private String note;                // Tipo de transaccion que se realizo, Abono, compra, cancelacion etc
-    private String description;         // El nombre del comercio en el que se uso
-    private String dateApplied;         // Cuando fue aplicada la transaccion
+    public String note;                // Tipo de transaccion que se realizo, Abono, compra, cancelacion etc
+    public String description;         // El nombre del comercio en el que se uso
+    public String dateApplied;         // Cuando fue aplicada la transaccion
     private double transactionAmount;   // El monto de la transaccion
     private double avaliableAmount;     // El saldo restante
 
@@ -22,20 +22,8 @@ public class Transaction {
         this.avaliableAmount = avaliableAmount;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public String getTransactionAmount() {
         return Formatter.toStringCurrency(transactionAmount);
-    }
-
-    public String getDateApplied() {
-        return dateApplied;
     }
 
     public String getAvaliableAmount() {

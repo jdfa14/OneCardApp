@@ -31,12 +31,14 @@ public class NavDrawActivity2 extends NavDrawActivity {
 
         if (savedInstanceState == null) {
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            mUser = User.getActualUser();
+            mUser.Update(this,null); // Updating User
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             mDrawerMenuFragment = (NavigationDrawerMenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_menu);
             mDrawerMenuFragment.setUp((DrawerLayout) findViewById(R.id.nav_drawerLayout), mToolbar, R.id.fragment_navigation_drawer_menu);
-            mUser = User.getActualUser();
-            mUser.Update(this,null); // Updating User
+        }else{
+            mDrawerMenuFragment.restore();
         }
     }
 

@@ -37,8 +37,8 @@ public class TransactionListAdapter extends ArrayAdapter<Transaction>{
         TextView descriptionTextView = (TextView) convertView.findViewById(R.id.item_trans_description);
         TextView amountTextView = (TextView) convertView.findViewById(R.id.item_trans_amount);
 
-        dateTextView.setText(transaction.getDateApplied());
-        descriptionTextView.setText(transaction.getDescription());
+        dateTextView.setText(transaction.dateApplied);
+        descriptionTextView.setText(transaction.description);
         amountTextView.setText(transaction.getTransactionAmount());
 
         return convertView;

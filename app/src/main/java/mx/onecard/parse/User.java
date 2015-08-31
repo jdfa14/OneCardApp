@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import android.support.v4.util.ArrayMap;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -12,28 +12,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 
 import mx.onecard.lists.items.Card;
 import mx.onecard.lists.items.NotificationItem;
-import mx.onecard.services.ServerConnection;
 
 /**
  * Created by OneCardAdmon on 20/07/2015.
  * Clase que manejara las actualizaciones de los datos del usuario
  */
 
-//TODO incompleto
+//TODO incompleto falta agregar temporizadores, actualizar las tarjetas sin deshacer el arreglo y otras funciones mas
 public class User {
     private String name;
     private String token;
-    private ArrayList<Card> cards;
-    private ArrayList<NotificationItem> notificationItems;
+    public ArrayMap<Integer,Card> mCardsMap;
+    public ArrayList<NotificationItem> notificationItems;
     private DateTime lastRequestTime;
     private ProgressDialog progressDialog = null;
 
@@ -51,16 +47,21 @@ public class User {
     private User(String name, String token) {
         this.name = name;
         this.token = token;
-        cards = new ArrayList<>();
+        mCardsMap = new ArrayMap<>();
         notificationItems = new ArrayList<>();
         lastRequestTime = new DateTime().minusDays(1);
     }
 
-    public ArrayList<Card> getCards() {
-        return cards;
+    public synchronized Card updateCard(Card card){
+        if(mCardsMap.containsKey(card.getCardDigits())){
+            mCardsMap.get(card.getCardDigits()).update(card);
+        }else{
+            mCardsMap.put(card.getCardDigits(),card);
+        }
+        return card;
     }
 
-    public void Update(final Context context, final OnUpdate mListener) {
+    public synchronized void Update(final Context context, final OnUpdate mListener) {
 
         AsyncTask<Void, Void, JSONObject> task = new AsyncTask<Void, Void, JSONObject>() {
             @Override
@@ -119,6 +120,7 @@ public class User {
         DateTime requestTime = new DateTime();
         Interval interval;
         interval = new Interval(lastRequestTime, requestTime);
+        ArrayList<Card> cards;
 
         if (interval.toDuration().getStandardMinutes() < 1)
             return false;
@@ -133,39 +135,10 @@ public class User {
         //TODO Este es temporal hasta que se hagan las pruebas y se haga una verdadera conexion al servidor
         //cards.clear(); // TODO DESCOMENTAR esto cuando no sea fase de pruebas
         try {
-            cards.add(JSONParser.parseCard(new JSONObject("{\n" +
-                    "      \"card\": \"5362\",\n" +
-                    "      \"balance\": 17.5,\n" +
-                    "      \"product\": \"Despensa\",\n" +
-                    "      \"transactions\": {\n" +
-                    "        \"type1\": [\n" +
-                    "          {\n" +
-                    "            \"note\": \"Compra\",\n" +
-                    "            \"merchant\": \"HEB\",\n" +
-                    "            \"dtApplied\": \"2015-07-07 4:16:32\",\n" +
-                    "            \"transactionAmount\": 12.5,\n" +
-                    "            \"availableAmount\": 17.5\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"note\": \"Compra\",\n" +
-                    "            \"merchant\": \"Soriana\",\n" +
-                    "            \"dtApplied\": \"2015-07-06 4:16:32\",\n" +
-                    "            \"transactionAmount\": 10,\n" +
-                    "            \"availableAmount\": 30\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"note\": \"Compra\",\n" +
-                    "            \"merchant\": \"HEB\",\n" +
-                    "            \"dtApplied\": \"2015-07-05 4:16:32\",\n" +
-                    "            \"transactionAmount\": 60,\n" +
-                    "            \"availableAmount\": 40\n" +
-                    "          }\n" +
-                    "        ],\n" +
-                    "        \"type2\": [],\n" +
-                    "        \"type3\": []\n" +
-                    "      }\n" +
-                    "    }")));
-
+            cards = JSONParser.parseCards(new JSONArray("[{\"card\":5362,\"balance\":17.5,\"product\":14,\"state\":2,\"transactions\":{\"type1\":[{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-07 4:16:32\",\"transactionAmount\":12.5,\"availableAmount\":17.5},{\"note\":\"Compra\",\"merchant\":\"Soriana\",\"dtApplied\":\"2015-07-06 4:16:32\",\"transactionAmount\":10,\"availableAmount\":30},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-05 4:16:32\",\"transactionAmount\":60,\"availableAmount\":40}],\"type2\":[],\"type3\":[]}},{\"card\":\"5786\",\"balance\":450,\"product\":7,\"state\":3,\"transactions\":{\"type1\":[{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-07 4:16:32\",\"transactionAmount\":150,\"availableAmount\":450},{\"note\":\"Compra\",\"merchant\":\"Soriana\",\"dtApplied\":\"2015-07-06 4:16:32\",\"transactionAmount\":302.5,\"availableAmount\":600},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-05 4:16:32\",\"transactionAmount\":72.5,\"availableAmount\":902.5},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-07 4:16:32\",\"transactionAmount\":15,\"availableAmount\":975},{\"note\":\"Compra\",\"merchant\":\"Soriana\",\"dtApplied\":\"2015-07-06 4:16:32\",\"transactionAmount\":10,\"availableAmount\":990},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-05 4:16:32\",\"transactionAmount\":57.5,\"availableAmount\":800},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-07 4:16:32\",\"transactionAmount\":12.5,\"availableAmount\":857.5},{\"note\":\"Compra\",\"merchant\":\"Soriana\",\"dtApplied\":\"2015-07-06 4:16:32\",\"transactionAmount\":10,\"availableAmount\":870},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-05 4:16:32\",\"transactionAmount\":60,\"availableAmount\":880},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-05 4:16:32\",\"transactionAmount\":60,\"availableAmount\":940}],\"type2\":[],\"type3\":[]}},{\"card\":\"5362\",\"balance\":17.5,\"product\":9,\"state\":4,\"transactions\":{\"type1\":[{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-07 4:16:32\",\"transactionAmount\":12.5,\"availableAmount\":17.5},{\"note\":\"Compra\",\"merchant\":\"Soriana\",\"dtApplied\":\"2015-07-06 4:16:32\",\"transactionAmount\":10,\"availableAmount\":30},{\"note\":\"Compra\",\"merchant\":\"HEB\",\"dtApplied\":\"2015-07-05 4:16:32\",\"transactionAmount\":60,\"availableAmount\":40}],\"type2\":[],\"type3\":[]}}]"));
+            for(Card card : cards){
+                updateCard(card);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -187,9 +160,19 @@ public class User {
         return notificationItems;
     }
 
+    /**
+     * Cambiar estadod e tarjeta
+     * @param key posicion de tarjeta a la cuals e cambiara el estado
+     */
+    public void changeCardStatus(int key, OnUpdate mListener){
+        mListener.onPreUpdate();
+        // TODO llamar al servicio de desactivar tarjeta
+        mCardsMap.get(key).swapActivation();
+        mListener.onPostUpdate();
+    }
+
     public interface OnUpdate {
         void onPreUpdate();
         void onPostUpdate();
     }
-
 }

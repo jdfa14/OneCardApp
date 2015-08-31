@@ -45,6 +45,44 @@
         <item>Mes anterior</item>
     </string-array>
 
+    <!-- Descripcion de estados -->
+    <string-array name="states">
+        <item>Desconocido</item>
+        <item>Inactica</item>
+        <item>Asignada</item>
+        <item>En operacion</item>
+        <item>Suspendida</item>
+        <item>Baja</item>
+        <item>Perdida</item>
+        <item>Robada</item>
+        <item>Remplazada</item>
+        <item>Cancelada</item>
+    </string-array>
+
+    <!-- Descripcion de productos -->
+    <string-array name="products">
+        <item>PRODUCTO DESCONOCIDO</item>
+        <item>PREPAGO</item>
+        <item>REGALO</item>
+        <item>CREDIP-PLUS</item>
+        <item>MONEDERO VALE DESPENSA</item>
+        <item>BONOS DE GASOLINA</item>
+        <item>ABIERTO(DEBITO)</item>
+        <item>GASOLINA</item>
+        <item>ABIERTO(CREDITO)</item>
+        <item>VIATICOS y GASTOS</item>
+        <item>CREDI APARTADO</item>
+        <item>COMIDA</item>
+        <item>GASTOS GENERALES</item>
+        <item>RED ONECARD</item>
+        <item>MONEDERO ELECTRONICO-DESPENSA</item>
+        <item>VALE DE DESPENSA</item>
+        <item>MONEDERO ELECTRONICO-COMBUSTIBLE</item>
+        <item>PRODUCTO DESCONOCIDO</item>
+        <item>VIATICOS y GASTOS MASTER CARD</item>
+        <item>IMSS TRASLADOS</item>
+    </string-array>
+
     <string name="reg_email">Correo Electronico</string>
     <string name="reg_password">Contraseña</string>
     <string name="ref_password_confirm">Confirmar contraseña</string>
@@ -81,4 +119,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="frag_notifications_header">Notificaciones</string>
     <string name="content_icon">icon</string>
+
+    <!-- Mensajes de Dialogs -->
+    <string name="dialog_change_status_title_activating">Activar tarjeta</string>
+    <string name="dialog_change_status_message_activating">Al reactivar la tarjeta podran restablecerse todos los servicios que incluye el producto. ¿Esta seguro que quiere activarla?</string>
+    <string name="dialog_change_status_title_deactivating">Desactivar tarjeta</string>
+    <string name="dialog_change_status_message_deactivating">Al desactivar la tarjeta, esta quedara totalmente inavilitada suspendiendo todos sus servicios hasta ser reactivada. ¿Esta seguro que quiere desactivarla?</string>
+    <string name="dialog_default_positive_button">Si</string>
+    <string name="dialog_default_negative_button">No</string>
+    
 </resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            style="@style/cell_basic"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.65"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/row_product_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="Dummy Card Product" />
+
+            <TextView
+                android:id="@+id/row_card_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="****-1234" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            style="@style/cell_basic"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.35">
+
+            <CheckBox
+                android:id="@+id/row_change_active_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:saveEnabled="false"
+                android:visibility="visible" />
+
+            <ProgressBar
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</TableRow>

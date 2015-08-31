@@ -13,12 +13,11 @@
 
         <TextView
             android:id="@+id/frag_notifications_header_textview"
-            style="@style/sectionHeader"
+            style="@style/text_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_notifications_black_24dp"
             android:drawablePadding="5dp"
-            android:gravity="center_vertical"
             android:text="@string/frag_notifications_header" />
 
         <android.support.v7.widget.RecyclerView

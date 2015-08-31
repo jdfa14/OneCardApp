@@ -4,27 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
-import mx.onecard.lists.adapters.CardsListAdapter;
+
+import mx.onecard.interfaces.list.OnClickListener;
+import mx.onecard.lists.adapters.CardAdapter;
 import mx.onecard.onecardapp.R;
-import mx.onecard.onecardapp.TransactionsActivity;
 import mx.onecard.parse.User;
 import mx.onecard.parse.User.OnUpdate;
 
-public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, OnUpdate {
+public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, OnUpdate, OnClickListener {
     private static CardBalanceFragment instance = new CardBalanceFragment();
 
-    private CardsListAdapter mAdapter;
+    //private CardsListAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ListView mCardListView;
-    //private ListView mCardListView2;
-    //private ListView mCardListView3;
+    private User mUser;
+    private RecyclerView mRecyclerView;
+    private CardAdapter mCardAdapter;
+    //private ListView mCardListView;
 
     public static CardBalanceFragment getInstance() {
         return instance;
@@ -35,7 +38,7 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     public CardBalanceFragment() {
-        // Required empty public constructor
+        mUser = User.getActualUser();
     }
 
     @Override
@@ -47,18 +50,21 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_card_balance, container, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.frag_balance_swipeRefreshLayout);
-        mCardListView = (ListView) v.findViewById(R.id.frag_balance_cards_listview);
-        //mCardListView2 = (ListView) v.findViewById(R.id.frag_balance_cards_listview2);
-        //mCardListView3 = (ListView) v.findViewById(R.id.frag_balance_cards_listview3);
-
         if (savedInstanceState == null) {
+            mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.frag_balance_swipeRefreshLayout);
+            //mCardListView = (ListView) v.findViewById(R.id.frag_balance_cards_listview);
 
-            mAdapter = new CardsListAdapter(getActivity(), R.layout.item_card, User.getActualUser().getCards());
+            //mAdapter = new CardsListAdapter(getActivity(), R.layout.item_card, Arrays.<Card>asList((Card[]) User.getActualUser().mCardsMap.values().toArray()));
+            mCardAdapter = new CardAdapter(getActivity(),R.layout.item_card, User.getActualUser().mCardsMap.values(),this);
 
-            mCardListView.setOnItemClickListener(new CardListItemClickListener());
-            mCardListView.setOnScrollListener(this);
-            mCardListView.setAdapter(mAdapter);
+            mRecyclerView = (RecyclerView) v.findViewById(R.id.frag_balance_cards_recyclerview);
+            mRecyclerView.setAdapter(mCardAdapter);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            //mCardListView.setOnItemClickListener(new CardListItemClickListener());
+            //mCardListView.setOnScrollListener(this);
+            //mCardListView.setAdapter(mAdapter);
 
             mSwipeRefreshLayout.setOnRefreshListener(this);
             mSwipeRefreshLayout.setColorSchemeResources(
@@ -68,7 +74,6 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
                     android.R.color.holo_red_light);
 
             User.getActualUser().Update(getActivity(), this);
-
         }
         return v;
     }
@@ -100,22 +105,18 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onPostUpdate() {
-        //mCardListView2.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_2, User.getActualUser().getCards()));
-        //mCardListView3.setAdapter(new CardsListAdapter(getActivity(), R.layout.item_card_3, User.getActualUser().getCards()));
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
+        mCardAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    //CLASSES
-    private class CardListItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(getActivity(), TransactionsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("index", position);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
+    @Override
+    public void onItemClick(View v, int position) {
+        // El adapter coloca el ID en la bariable position, donde el ID es el numero de la tarjeta (4 digitos)
+        Intent intent = new Intent(getActivity(), TransactionsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", position);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
-
 }

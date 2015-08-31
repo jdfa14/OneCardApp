@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import mx.onecard.interfaces.ItemTouchHelperAdapter;
-import mx.onecard.interfaces.ListInterfaces;
+import mx.onecard.interfaces.list.OnClickListener;
 import mx.onecard.lists.items.NotificationItem;
 import mx.onecard.onecardapp.R;
 import mx.onecard.parse.User;
@@ -27,9 +27,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     private LayoutInflater inflater;
     private List<NotificationItem> dataset = Collections.emptyList();
     private Context context;
-    private ListInterfaces.OnClickListener mOnClickListener;
+    private OnClickListener mOnClickListener;
 
-    public NotificationsAdapter(Context context, List<NotificationItem> dataset, ListInterfaces.OnClickListener mOnClickListener){
+    public NotificationsAdapter(Context context, List<NotificationItem> dataset, OnClickListener mOnClickListener){
         this.context = context;
         this.dataset = dataset;
         this.mOnClickListener = mOnClickListener;
