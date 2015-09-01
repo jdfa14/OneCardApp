@@ -1,7 +1,7 @@
 package mx.onecard.onecardapp;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +13,7 @@ import mx.onecard.socialnetworks.SocialNetworkSessionHandler;
 
 
 public class RegisterActivity
-        extends ActionBarActivity
+        extends AppCompatActivity
         implements View.OnFocusChangeListener {
 
     @Override

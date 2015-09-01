@@ -55,9 +55,9 @@ public class NavDrawActivity extends AppCompatActivity implements ListView.OnIte
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
             ArrayList<NavMenu> items = new ArrayList<NavMenu>();
-            items.add(new NavMenu(mMenuTitles[0], R.drawable.home_icon));
-            items.add(new NavMenu(mMenuTitles[1], R.drawable.credit_card_icon));
-            items.add(new NavMenu(mMenuTitles[2], R.drawable.settings_icon));
+            items.add(new NavMenu(mMenuTitles[0], R.drawable.home_icon, NavMenu.TYPE.TRANSITION));
+            items.add(new NavMenu(mMenuTitles[1], R.drawable.credit_card_icon, NavMenu.TYPE.TRANSITION));
+            items.add(new NavMenu(mMenuTitles[2], R.drawable.settings_icon, NavMenu.TYPE.TRANSITION));
 
             mDrawerListView.setAdapter(new NavDrawerListAdapter(this, R.layout.item_nav_drawer, items));
             mDrawerListView.setOnItemClickListener(this);

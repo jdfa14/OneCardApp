@@ -36,8 +36,8 @@ public class NavDrawerListAdapter extends ArrayAdapter<NavMenu> {
         TextView name = (TextView) convertView.findViewById(R.id.name);
 
         NavMenu item = getItem(position);
-        icon.setImageResource(item.getIconId());
-        name.setText(item.getName());
+        icon.setImageResource(item.iconId);
+        name.setText(item.name);
 
         return convertView;
     }
