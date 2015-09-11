@@ -104,7 +104,7 @@ public class CardBalanceFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onPostUpdate() {
+    public void onPostUpdate(int responceCode, String message) {
         //mAdapter.notifyDataSetChanged();
         mCardAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);

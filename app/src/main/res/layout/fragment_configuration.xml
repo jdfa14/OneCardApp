@@ -96,6 +96,7 @@
                         android:text="Agregar / Eliminar Tarjetas" />
 
                     <Button
+                        android:id="@+id/frag_config_addCard_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Agregar Tarjeta" />
@@ -125,13 +126,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.35"
-                                android:text="Acción" />
+                                android:text="Estado" />
 
                         </TableRow>
-
-                        <include layout="@layout/table_row_add" />
-
-                        <include layout="@layout/table_row_add" />
 
                         <include layout="@layout/table_row_add" />
 

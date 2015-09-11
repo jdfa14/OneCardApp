@@ -12,9 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import mx.onecard.lists.items.Card;
 import mx.onecard.lists.items.NotificationItem;
@@ -26,6 +24,8 @@ import mx.onecard.lists.items.NotificationItem;
 
 //TODO incompleto falta agregar temporizadores, actualizar las tarjetas sin deshacer el arreglo y otras funciones mas
 public class User {
+    public static final int RP_ADD_CARD_SUCCESS = 0;
+    public static final int RP_ADD_CARD_FAILED = 1;
     private String name;
     private String token;
     public ArrayMap<Integer,Card> mCardsMap;
@@ -105,7 +105,7 @@ public class User {
             protected void onPostExecute(JSONObject jsonObject) {
                 super.onPostExecute(jsonObject);
                 if (mListener != null) {
-                    mListener.onPostUpdate();
+                    mListener.onPostUpdate(-1,"");
                 }
                 if (progressDialog != null) {
                     progressDialog.dismiss();
@@ -168,11 +168,22 @@ public class User {
         mListener.onPreUpdate();
         // TODO llamar al servicio de desactivar tarjeta
         mCardsMap.get(key).swapActivation();
-        mListener.onPostUpdate();
+        mListener.onPostUpdate(1,"");
+    }
+
+    public void addCard(int cardNumber, int expirationDate, OnUpdate mListener){
+        if(mListener != null){
+            mListener .onPreUpdate();
+        }
+            Card card = new Card(cardNumber % 1000,18,100.5,2);
+            mCardsMap.put(card.getCardDigits(),card);
+        if(mListener != null){
+            mListener .onPostUpdate(RP_ADD_CARD_SUCCESS,"Tarjeta agregada exitosamente");
+        }
     }
 
     public interface OnUpdate {
         void onPreUpdate();
-        void onPostUpdate();
+        void onPostUpdate(int responseCode, String message);
     }
 }

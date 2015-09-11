@@ -171,14 +171,14 @@ public class NavigationDrawerMenuFragment extends Fragment implements OnClickLis
     private void selectMenuItem(int position) {
         mSelectedFragment = position;
 
-        if (position == mDrawerAdapter.getItemCount() - 1) { // Ultimo boton (logout)
+        //if (position == mDrawerAdapter.getItemCount() - 1) { // Ultimo boton (logout)
 
-        } else {
+        //} else {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.nav_frameLayout_container, mFragments[position])
                     .commit();
-        }
+        //}
 
         closeDrawer();
         mDrawerAdapter.selectItem(position);

@@ -127,5 +127,9 @@
     <string name="dialog_change_status_message_deactivating">Al desactivar la tarjeta, esta quedara totalmente inavilitada suspendiendo todos sus servicios hasta ser reactivada. ¿Esta seguro que quiere desactivarla?</string>
     <string name="dialog_default_positive_button">Si</string>
     <string name="dialog_default_negative_button">No</string>
-    
+    <string name="dummy_card">1234-5678-1425-2536</string>
+    <string name="string_card_number">Numero de tarjeta</string>
+    <string name="string_expiration_date">Fecha de expiración</string>
+    <string name="dummy_expiration_date">11/78</string>
+
 </resources>

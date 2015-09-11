@@ -29,9 +29,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            multiDexEnabled true
         }
     }
 }
@@ -55,4 +53,5 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     compile 'com.android.support:percent:22.2.0'
     compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:multidex:1.0.0'
 }

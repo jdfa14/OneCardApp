@@ -30,14 +30,15 @@
         style="@style/cell_basic"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.35"
-        android:padding="8dp">
+        android:layout_weight="0.35">
 
-        <Button
-            android:id="@+id/row_add_delete_button"
+        <TextView
+            android:id="@+id/row_add_delete_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Eliminar" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Activa" />
 
     </FrameLayout>
 

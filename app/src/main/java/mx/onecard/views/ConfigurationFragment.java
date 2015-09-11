@@ -1,6 +1,5 @@
 package mx.onecard.views;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.onecard.DIalogs.AddCardDialogFragment;
 import mx.onecard.lists.items.Card;
 import mx.onecard.onecardapp.R;
 import mx.onecard.parse.User;
@@ -48,41 +48,25 @@ public class ConfigurationFragment extends Fragment implements CheckBox.OnClickL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_configuration, container, false);
-        TableLayout tableChangeStatus = (TableLayout) view.findViewById(R.id.frag_config_disable_cards_tablelayout);
+
 
         if (savedInstanceState == null) {
-            TableLayout tableAddDelete = (TableLayout) view.findViewById(R.id.frag_config_added_cards_tablelayout);
 
 
             mUser = User.getActualUser();
 
+            //Programacion de botones
+            view.findViewById(R.id.frag_config_addCard_button).setOnClickListener(this);
+
             // Obteniendo las tarketas y agregandolas dinamicamtne;
+            TableLayout tableAddStatus = (TableLayout) view.findViewById(R.id.frag_config_added_cards_tablelayout);
+            TableLayout tableChangeStatus = (TableLayout) view.findViewById(R.id.frag_config_disable_cards_tablelayout);
             List<Card> cards = new ArrayList<>(mUser.mCardsMap.values());
             for(Card cardAux : cards){
-                //View rowAdd = inflater.inflate(R.layout.table_row_add,tableAddDelete,true);
-                //((TextView)rowAdd.findViewById(R.id.row_card_textview)).setText(card.getCardNumber());
-                //((TextView)rowAdd.findViewById(R.id.row_product_textview)).setText(card.getCardNumber());
-                //rowAdd.findViewById(R.id.row_add_delete_button).setOnClickListener(this);
-
-                addRowCardWithCheckbox(cardAux, tableChangeStatus,R.layout.table_row_change,cardAux.getCardDigits());
+                addRowCardWithStatus(cardAux, tableAddStatus,R.layout.table_row_add);
+                addRowCardWithCheckbox(cardAux, tableChangeStatus,R.layout.table_row_change);
             }
 
-        } else {
-            //ArrayList<Card> cards = mUser.getCards();
-            /*boolean header = true;
-            for(int i = 0; i < tableChangeStatus.getChildCount(); i++){
-                View tableChild = tableChangeStatus.getChildAt(i);
-                if(tableChild instanceof TableLayout){
-                    if (!header){
-                        TableRow tableRow = (TableRow) tableChild;
-                        CheckBox checkBox = (CheckBox) tableRow.findViewById(R.id.table_checkbox);
-                        checkBox.setChecked((Boolean) checkBox.getTag(R.id.checkbox_state));
-                    }else{
-                        header = false; // flag down
-                    }
-
-                }
-            }*/
         }
         return view;
     }
@@ -96,12 +80,12 @@ public class ConfigurationFragment extends Fragment implements CheckBox.OnClickL
         return newRow;
     }
 
-    private void addRowCardWithCheckbox(Card card, TableLayout parent, int resource, int pos) {
+    private void addRowCardWithCheckbox(Card card, TableLayout parent, int resource) {
         View newRow = addRowCard(card, parent, resource);
         CheckBox checkBox = ((CheckBox) newRow.findViewById(R.id.row_change_active_checkbox));
         checkBox.setChecked(card.isActive());
         checkBox.setId(R.id.table_checkbox);
-        checkBox.setTag(R.id.checkbox_position, pos);
+        checkBox.setTag(R.id.checkbox_position, card.getCardDigits());
         checkBox.setTag(R.id.checkbox_state, card.isActive());
         checkBox.setOnClickListener(this);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -110,6 +94,10 @@ public class ConfigurationFragment extends Fragment implements CheckBox.OnClickL
                 Log.e(TAG, isChecked + "");
             }
         });
+    }
+    private void addRowCardWithStatus(Card card, TableLayout parent, int resource){
+        View newRow = addRowCard(card, parent,resource);
+        ((TextView) newRow.findViewById(R.id.row_add_delete_textview)).setText(card.getState());
     }
 
 
@@ -130,7 +118,7 @@ public class ConfigurationFragment extends Fragment implements CheckBox.OnClickL
                 }
 
                 @Override
-                public void onPostUpdate() {
+                public void onPostUpdate(int responceCode, String message) {
                     // Do post Stuff
                 }
             };
@@ -168,8 +156,17 @@ public class ConfigurationFragment extends Fragment implements CheckBox.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v instanceof CheckBox && v.getId() == R.id.table_checkbox) {
-            swapCardStatus((int) v.getTag(R.id.checkbox_position), (CheckBox) v);
+        int id = v.getId();
+        switch(id){
+            case R.id.table_checkbox :
+                if(v instanceof CheckBox){
+                    swapCardStatus((int) v.getTag(R.id.checkbox_position), (CheckBox) v);
+                }
+                break;
+            case R.id.frag_config_addCard_button :
+                AddCardDialogFragment dialog = new AddCardDialogFragment();
+                dialog.show(getActivity().getSupportFragmentManager(),this.getClass().getSimpleName());
+                break;
         }
     }
 }
